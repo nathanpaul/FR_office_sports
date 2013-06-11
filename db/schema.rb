@@ -11,7 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130611031101) do
+ActiveRecord::Schema.define(version: 20130611205057) do
+
+  create_table "games", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "winning_score"
+    t.integer  "losing_score"
+    t.string   "blue_offense"
+    t.string   "blue_defense"
+    t.string   "red_offense"
+    t.string   "red_defense"
+    t.float    "blue_ELO"
+    t.float    "red_ELO"
+  end
 
   create_table "players", force: true do |t|
     t.datetime "created_at"
@@ -23,6 +36,9 @@ ActiveRecord::Schema.define(version: 20130611031101) do
     t.integer  "wins_on_defense"
     t.integer  "losses_on_defense"
     t.float    "ELO_rating"
+    t.string   "name"
+    t.integer  "points_for"
+    t.integer  "points_against"
   end
 
 end
