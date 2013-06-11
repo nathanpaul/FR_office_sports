@@ -1,0 +1,68 @@
+header{
+	position: absolute;
+	width: 100%;
+	left: 0;
+	top: 0;
+	color: #fff;
+	font-size: 32px;
+	height: 80px;
+	background-image: url("BGhue.png");
+	background-repeat: repeat-x;
+	font-family: "Trebuchet MS",Trebuchet,Tahoma,Verdana,Arial,sans-serif;
+
+	.logo{
+		margin-left: 105px;
+		vertical-align: 50%;
+	}
+
+	.title{
+		font-weight: 700;
+		font-size: 1.2em;
+		line-height: 1.5;
+		vertical-align: 50%;
+		margin-left: 10px;
+		font-style:italic;
+		letter-spacing: 2px;
+	}
+
+	.quote{
+		float: right;
+		font-style:italic;
+		font-size: 0.75em;
+		color: #ef9920;
+		line-height: 2.5;
+		margin-right: 210px;
+		letter-spacing: 2px;
+	}
+}
+
+body{
+	background: #e9e9e9;
+	margin-top: 100px;
+	color: #333;
+	font-family: "Trebuchet MS",Trebuchet,Tahoma,Verdana,Arial,sans-serif;
+
+	#container_left{
+		width: 400px;
+		margin-left: 105px;
+		height: 600px;
+		-webkit-border-radius: 10px;
+		border: 3px solid #ef9920;
+		background: #d3d3d3;
+		overflow-y: hidden;
+		.players{
+			background-image: url("BGhue.png");
+			-webkit-border-top-left-radius: 7px;
+			-webkit-border-top-right-radius: 7px;
+			-moz-border-top-left-radius: 7px;
+			-moz-border-top-right-radius: 7px;
+			border-top-left-radius: 7px;
+			border-top-right-radius: 7px;						
+			color: #fff;
+			background-repeat: repeat-x;
+			text-align: center;
+			line-height: 1.8;
+			margin-top: 0px;
+		}
+	}
+}
