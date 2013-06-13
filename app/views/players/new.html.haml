@@ -1,0 +1,18 @@
+%h1 Create a new player!
+= form_for(@player) do |f|
+  = f.hidden_field :wins, :value => 0
+  = f.hidden_field :losses, :value => 0
+  = f.hidden_field :wins_on_offense, :value => 0
+  = f.hidden_field :losses_on_offense, :value => 0
+  = f.hidden_field :wins_on_defense, :value => 0
+  = f.hidden_field :losses_on_defense, :value => 0
+  = f.hidden_field :ELO_rating, :value => 1500
+  = f.hidden_field :points_for, :value => 0
+  = f.hidden_field :points_against, :value => 0
+
+  .field
+    = f.label :name
+    %br/
+    = f.text_field :name
+  .actions
+    = f.submit

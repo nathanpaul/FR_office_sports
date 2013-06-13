@@ -5,4 +5,14 @@
 %body
 	#container_left
 		%h1.players Player Rankings
+		%ul.players_container
+			%li.player_row
+				%span.name.header Name
+				%span.record.header Record
+				%span.ELO.header Rating
+			-Player.all.each do |p|
+				%li.player_row
+					%span.name=p.name
+					%span.record="#{p.wins} - #{p.losses}"
+					%span.ELO=p.ELO_rating
 	#container_right
