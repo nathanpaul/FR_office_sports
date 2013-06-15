@@ -1,0 +1,8 @@
+%h1 Create a new Game!
+=form_for(@game) do |f|
+	.field
+		= f.label "Winning Score: "
+		= f.number_field :winning_score
+		%br/
+	.actions
+		= f.submit

@@ -119,4 +119,18 @@ body{
 			}
 		}
 	}
+
+	.add_player{
+		margin-left: 110px;
+		margin-top: 20px;
+		a{
+			color: #333;
+		}
+	}
+
+	#container_right{
+		float: right;
+		margin-left: 505px;
+		font-size: 28px;
+	}
 }

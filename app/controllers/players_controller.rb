@@ -10,6 +10,6 @@ class PlayersController < ApplicationController
 	def create
 		@player = Player.new(params[:player])
 		@player.save
-		redirect_to :back
+		redirect_to players_path
 	end
 end

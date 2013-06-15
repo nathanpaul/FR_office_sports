@@ -15,4 +15,6 @@
 					%span.name=p.name
 					%span.record="#{p.wins} - #{p.losses}"
 					%span.ELO=p.ELO_rating
+	#p.add_player=link_to "* Don't see yourself listed? Add yourself!", new_player_path
 	#container_right
+		%p.add_new_game=link_to "Add a new game here!", new_game_path
