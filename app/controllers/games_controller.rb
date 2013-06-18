@@ -17,18 +17,90 @@ class GamesController < ApplicationController
 
 		$player1 = Player.where(:name => @game.blue_offense).first
 		$player2 = Player.where(:name => @game.blue_defense).first
+		$player3 = Player.where(:name => @game.red_offense).first
+		$player4 = Player.where(:name => @game.red_defense).first
 
 		@game.blue_ELO = ($player1.ELO_rating + $player2.ELO_rating) / 2
+		@game.red_ELO = ($player3.ELO_rating + $player4.ELO_rating) / 2
 
-		$player1 = Player.where(:name => @game.red_offense).first
-		$player2 = Player.where(:name => @game.red_defense).first
+		$ELO_swing = 15
 
-		@game.red_ELO = ($player1.ELO_rating + $player2.ELO_rating) / 2
+		if @game.blue_ELO > @game.red_ELO && @game.winner == "Blue Team"
+			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.red_ELO / @game.blue_ELO)/1.33333)
+		elsif @game.blue_ELO > @game.red_ELO && @game.winner == "Red Team"
+			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.blue_ELO / @game.red_ELO)*1.33333)
+		elsif @game.blue_ELO < @game.red_ELO && @game.winner == "Red Team"
+			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.blue_ELO / @game.red_ELO)/1.33333)
+		else
+			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.red_ELO / @game.blue_ELO)*1.33333)	
+		end
 
+		if @game.losing_score == 0
+			$ELO_swing = 100
+		end
 
-		Player.where(:name => @game.blue_offense).first.games << @game
-		Player.where(:name => @game.blue_defense).first.games << @game
-		Player.where(:name => @game.red_offense).first.games << @game
-		Player.where(:name => @game.red_defense).first.games << @game
+		if @game.winner == "Red Team"
+			$player1.ELO_rating -= $ELO_swing
+			$player2.ELO_rating -= $ELO_swing
+			$player3.ELO_rating += $ELO_swing
+			$player4.ELO_rating += $ELO_swing
+
+			$player1.losses += 1
+			$player2.losses += 1
+			$player3.wins += 1
+			$player4.wins += 1
+
+			$player1.losses_on_offense += 1
+			$player2.losses_on_defense += 1
+			$player3.wins_on_offense += 1
+			$player4.wins_on_defense += 1
+
+			$player1.points_for += @game.losing_score
+			$player1.points_against += @game.winning_score
+
+			$player2.points_for += @game.losing_score
+			$player2.points_against += @game.winning_score
+
+			$player3.points_for += @game.winning_score
+			$player3.points_against += @game.losing_score
+
+			$player4.points_for += @game.winning_score
+			$player4.points_against += @game.losing_score							
+		else
+			$player1.ELO_rating += $ELO_swing
+			$player2.ELO_rating += $ELO_swing
+			$player3.ELO_rating -= $ELO_swing
+			$player4.ELO_rating -= $ELO_swing
+
+			$player1.wins += 1
+			$player2.wins += 1
+			$player3.losses += 1
+			$player4.losses += 1
+
+			$player1.wins_on_offense += 1
+			$player2.wins_on_defense += 1
+			$player3.losses_on_offense += 1
+			$player4.losses_on_defense += 1
+
+			$player1.points_for += @game.winning_score
+			$player1.points_against += @game.losing_score
+
+			$player2.points_for += @game.winning_score
+			$player2.points_against += @game.losing_score
+
+			$player3.points_for += @game.losing_score
+			$player3.points_against += @game.winning_score
+
+			$player4.points_for += @game.losing_score
+			$player4.points_against += @game.winning_score			
+		end
+
+		@game.ELO_swing = $ELO_swing
+		@game.save				
+
+		$player1.save
+		$player2.save
+		$player3.save
+		$player4.save		
 	end
 end

@@ -30,10 +30,11 @@ header{
 	.quote{
 		font-style:italic;
 		font-size: 0.75em;
-		color: #ef9920;;
-		margin-left: 175px;
+		color: #ef9920;
+		float: right;
+		margin-right: 8%;
 		letter-spacing: 2px;
-		vertical-align: 120%;
+		line-height: 2.4;
 	}
 }
 
@@ -44,7 +45,8 @@ body{
 	font-family: "Trebuchet MS",Trebuchet,Tahoma,Verdana,Arial,sans-serif;
 
 	#container_left{
-		width: 300px;
+		width: 85%;
+		min-width: 820px;
 		margin-left: 105px;
 		height: auto;
 		-webkit-border-radius: 10px;
@@ -75,41 +77,76 @@ body{
 			margin-bottom: 0;
 			font-size: 1.2em;
 
+			.header{
+				font-weight: 800;
+				line-height: 1.8;
+				text-decoration: underline;
+				text-align: center;
+				background: lighten(#ef9920, 20%);
+			}			
+
 			.player_row{
 				line-height: 2.5;
 				float: left;
 				width: 100%;
+				text-align: center;
 
-				.header{
+				.rank{
+					float: left;
 					text-align: center;
-					font-weight: 500;
+					width: 8%;
+					border-right: 1px solid #666;
 				}
 
 				.name, .name_header{
 					float: left;
 					text-align: center;
-					width: 110px;
+					width: 14%;
 					border-right: 1px solid #666;
 				}
+
+				.games_played{
+					float: left;
+					width: 8%;
+					border-right: 1px solid #666;
+				}				
 
 				.record, .record_header{
 					float: left;
 					text-align: center;
 					width: 82px;
+					width: 13%;
+					border-right: 1px solid #666;
 				}
+
+				.on_offense{
+					float: left;
+					width:13%;
+					border-right: 1px solid #666;
+				}				
+
+				.on_defense{
+					float: left;
+					width: 13%;
+					border-right: 1px solid #666;
+				}
+
+				.points_for{
+					float: left;
+					width: 8%;
+					border-right: 1px solid #666;
+				}
+
+				.points_against{
+					float: left;
+					width: 8%;
+					border-right: 1px solid #666;
+				}								
 
 				.ELO, .ELO_header{
-					border-left: 1px solid #666;
-					float: right;
-					width: 105px;
+					float: left;
+					width: 14%;
 					text-align: center;
-				}
-
-				.header{
-					font-weight: 800;
-					line-height: 1.8;
-					text-decoration: underline;
-					background: lighten(#ef9920, 20%);
 				}
 
 			}
@@ -123,14 +160,39 @@ body{
 	.add_player{
 		margin-left: 110px;
 		margin-top: 20px;
+		float: left;
+		font-size: 24px;
 		a{
 			color: #333;
+			text-decoration: none;
 		}
+	}
+
+	a:hover{
+		text-decoration: underline;
+	}
+
+	.add_new_game{
+		float: right;
+		margin-right: 7%;
+		margin-top: 20px;
+		font-size: 24px;
+		a{
+			color: #333;
+			text-decoration: none;
+		}
+		a:hover{
+			text-decoration: underline;
+		}		
 	}
 
 	#container_right{
 		float: right;
 		margin-left: 505px;
 		font-size: 28px;
+	}
+
+	.last_game{
+		margin-left: 105px;
 	}
 }
