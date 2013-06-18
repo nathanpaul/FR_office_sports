@@ -28,10 +28,8 @@
 					%span.points_against="#{p.points_against}"
 					%span.ELO=number_with_precision(p.ELO_rating, :precision => 2)
 	%p.add_new_stuff
-		%span.add_player=link_to "* Don't see yourself listed? Add yourself!", new_player_path
+		%span.add_player=link_to "Add Player", new_player_path
 		%span.add_new_game=link_to "Add a new game here!", new_game_path
-		%br/
-	%br/	
 	%p.last_game
 		-$last_game = Game.last
-		%span.text="The previous game between #{$last_game.blue_offense}/#{$last_game.blue_defense} and #{$last_game.red_offense}/#{$last_game.red_defense} had an ELO swing of #{number_with_precision($last_game.ELO_swing, :precision => 4)}."
+		%span.text="*The previous game between #{$last_game.blue_offense}/#{$last_game.blue_defense} and #{$last_game.red_offense}/#{$last_game.red_defense} had an ELO swing of #{number_with_precision($last_game.ELO_swing, :precision => 4)}."

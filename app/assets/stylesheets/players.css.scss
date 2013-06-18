@@ -46,7 +46,7 @@ body{
 
 	#container_left{
 		width: 85%;
-		min-width: 820px;
+		min-width: 1100px;
 		margin-left: 105px;
 		height: auto;
 		-webkit-border-radius: 10px;
@@ -157,13 +157,16 @@ body{
 		}
 	}
 
-	.add_player{
-		margin-left: 110px;
-		margin-top: 20px;
+	.add_new_game{
 		float: left;
+		margin-left: 10px;
+		margin-top: -15px;
 		font-size: 24px;
+		padding: 5px 10px;
+		background: #666;
+		-webkit-border-radius: 8px;
 		a{
-			color: #333;
+			color: #fff;
 			text-decoration: none;
 		}
 	}
@@ -172,13 +175,16 @@ body{
 		text-decoration: underline;
 	}
 
-	.add_new_game{
-		float: right;
-		margin-right: 7%;
-		margin-top: 20px;
+	.add_player{
+		float: left;
+		margin-left: 110px;
+		margin-top: -15px;
 		font-size: 24px;
+		padding: 5px 15px;
+		background: #666;
+		-webkit-border-radius: 8px;
 		a{
-			color: #333;
+			color: #fff;
 			text-decoration: none;
 		}
 		a:hover{
@@ -186,13 +192,15 @@ body{
 		}		
 	}
 
-	#container_right{
-		float: right;
-		margin-left: 505px;
-		font-size: 28px;
-	}
-
 	.last_game{
 		margin-left: 105px;
+	}
+
+	.text{
+		font-style: italic;
+		min-width: 680px;
+		word-wrap: none; 
+		color: #ef9920;
+		margin-left: 20px;
 	}
 }
