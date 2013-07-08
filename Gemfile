@@ -25,8 +25,8 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem "haml-rails", "~> 0.4"
 gem 'pg', :group => :production
-gem 'unicorn', :group => :production
-gem "thin", "~> 1.5.1", :group => :production
+gem 'unicorn'
+gem "thin"
 
 gem "protected_attributes"
 
