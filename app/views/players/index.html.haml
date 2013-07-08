@@ -32,4 +32,5 @@
 		%span.add_new_game=link_to "Add a new game here!", new_game_path
 	%p.last_game
 		-$last_game = Game.last
-		%span.text="*The previous game between #{$last_game.blue_offense}/#{$last_game.blue_defense} and #{$last_game.red_offense}/#{$last_game.red_defense} had an ELO swing of #{number_with_precision($last_game.ELO_swing, :precision => 4)}."
+		-unless $last_game == nil
+			%span.text="*The previous game between #{$last_game.blue_offense}/#{$last_game.blue_defense} and #{$last_game.red_offense}/#{$last_game.red_defense} had an ELO swing of #{number_with_precision($last_game.ELO_swing, :precision => 4)}."
