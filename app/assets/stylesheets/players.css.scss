@@ -5,9 +5,10 @@ header{
 	top: 0;
 	color: #fff;
 	font-size: 32px;
-	height: 80px;
+	height: 50px;
 	background-image: url("BGhue.png");
 	background-repeat: repeat-x;
+	background: #333;
 	font-family: "Trebuchet MS",Trebuchet,Tahoma,Verdana,Arial,sans-serif;
 	word-wrap: none;
 	overflow: hidden;
@@ -53,9 +54,9 @@ body{
 		border: 3px solid #ef9920;
 		background: #d3d3d3;
 		overflow-y: hidden;
-		-webkit-box-shadow: 4px 8px #666;
 		.players{
 			background-image: url("BGhue.png");
+			background: #333;
 			-webkit-border-top-left-radius: 7px;
 			-webkit-border-top-right-radius: 7px;
 			-moz-border-top-left-radius: 7px;
@@ -158,15 +159,16 @@ body{
 	}
 
 	.add_new_game{
-		float: left;
+		float: right;
 		margin-left: 10px;
-		margin-top: -15px;
+		margin-top: -5px;
 		font-size: 24px;
 		padding: 5px 10px;
-		background: #666;
+		background: lighten(#ef9920, 20%);
+		border: 1px solid #333;
 		-webkit-border-radius: 8px;
 		a{
-			color: #fff;
+			color: #333;
 			text-decoration: none;
 		}
 	}
@@ -176,15 +178,17 @@ body{
 	}
 
 	.add_player{
-		float: left;
-		margin-left: 110px;
-		margin-top: -15px;
+		float: right;
+		margin-left: 20px;
+		margin-right: 90px;
+		margin-top: -5px;
 		font-size: 24px;
 		padding: 5px 15px;
-		background: #666;
+		background: lighten(#ef9920, 20%);
+		border: 1px solid #333;
 		-webkit-border-radius: 8px;
 		a{
-			color: #fff;
+			color: #333;
 			text-decoration: none;
 		}
 		a:hover{

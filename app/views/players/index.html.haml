@@ -16,9 +16,9 @@
 				%span.points_for.header PF
 				%span.points_against.header PA
 				%span.ELO.header Rating
-			-Player.all.each do |p|
+			-Player.order("position ASC").each do |p|
 				%li.player_row{:id => p.id}
-					%span.rank 1
+					%span.rank=p.position
 					%span.name=p.name
 					%span.games_played="#{p.wins + p.losses}"
 					%span.record="#{p.wins} - #{p.losses}"
