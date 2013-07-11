@@ -1,5 +1,5 @@
 class PlayersController < ApplicationController
-	before_action :sort_by_ELO
+	before_action :sort_by_elo
 
 	def index
 	end
@@ -14,12 +14,18 @@ class PlayersController < ApplicationController
 		redirect_to players_path
 	end
 
-	def sort_by_ELO
+	def sort_by_elo
 		$rank = 1
+		$previous_rank = 0
 
 		Player.order("elo_rating DESC").each do |p|
-			p.position = $rank
-			$rank += 1;
+			if p.elo_rating == $previous_rank
+				p.position = $rank
+			else
+				p.position = $rank
+				$rank += 1
+			end
+			$previous_rank = p.elo_rating
 			p.save
 		end
 	end

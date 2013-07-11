@@ -40,10 +40,10 @@ class GamesController < ApplicationController
 		end
 
 		if @game.winner == "Red Team"
-			$player1.elo_rating -= $elo_swing
-			$player2.elo_rating -= $elo_swing
-			$player3.elo_rating += $elo_swing
-			$player4.elo_rating += $elo_swing
+			$player1.elo_rating -= $ELO_swing
+			$player2.elo_rating -= $ELO_swing
+			$player3.elo_rating += $ELO_swing
+			$player4.elo_rating += $ELO_swing
 
 			$player1.losses += 1
 			$player2.losses += 1
@@ -95,7 +95,7 @@ class GamesController < ApplicationController
 			$player4.points_against += @game.winning_score			
 		end
 
-		@game.elo_swing = $elo_swing
+		@game.elo_swing = $ELO_swing
 		@game.save				
 
 		$player1.save
