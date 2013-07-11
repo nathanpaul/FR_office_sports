@@ -16,14 +16,14 @@ class PlayersController < ApplicationController
 
 	def sort_by_elo
 		$rank = 1
-		$previous_rank = 1500.0
+		$previous_rank = Player.order("elo_rating DESC").first.elo_rating
 
 		Player.order("elo_rating DESC").each do |p|
 			if p.elo_rating == $previous_rank
 				p.position = $rank
 			else
-				p.position = $rank
 				$rank += 1
+				p.position = $rank
 			end
 			$previous_rank = p.elo_rating
 			p.save
