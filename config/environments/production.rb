@@ -24,6 +24,7 @@ FROfficeSports::Application.configure do
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
+  config.assets.precompile += ['static_pages.css']
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
