@@ -20,8 +20,8 @@ class GamesController < ApplicationController
 		$player3 = Player.where(:name => @game.red_offense).first
 		$player4 = Player.where(:name => @game.red_defense).first
 
-		@game.blue_elo = ($player1.ELO_rating + $player2.ELO_rating) / 2
-		@game.red_elo = ($player3.ELO_rating + $player4.ELO_rating) / 2
+		@game.blue_elo = ($player1.elo_rating + $player2.elo_rating) / 2
+		@game.red_elo = ($player3.elo_rating + $player4.elo_rating) / 2
 
 		$ELO_swing = 15
 
