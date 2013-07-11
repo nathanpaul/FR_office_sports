@@ -6,9 +6,14 @@ class GamesController < ApplicationController
 
 	def create
 		@game = Game.new(params[:game])
-		calc_and_update_ELO		
-		@game.save
-		redirect_to players_path
+		if @game.password == "donttellneal"	
+			calc_and_update_ELO			
+			@game.save
+			redirect_to players_path
+		else
+			@game.delete
+			redirect_to new_game_path
+		end
 	end
 
 	private

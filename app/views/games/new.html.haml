@@ -21,5 +21,9 @@
 		%br/
 		=f.label "Winner? "
 		= f.select :winner, ["Blue Team", "Red Team"]
+		%br/
+		%br/
+		=f.label "Password?"
+		=f.password_field :password
 	.actions
 		= f.submit
