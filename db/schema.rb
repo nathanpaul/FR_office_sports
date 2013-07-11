@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130618033754) do
+ActiveRecord::Schema.define(version: 20130711000029) do
 
   create_table "games", force: true do |t|
     t.datetime "created_at"
@@ -22,11 +22,11 @@ ActiveRecord::Schema.define(version: 20130618033754) do
     t.string   "blue_defense"
     t.string   "red_offense"
     t.string   "red_defense"
-    t.float    "blue_ELO"
-    t.float    "red_ELO"
+    t.float    "blue_elo"
+    t.float    "red_elo"
     t.string   "winner"
     t.integer  "player_id"
-    t.float    "ELO_swing"
+    t.float    "elo_swing"
   end
 
   create_table "players", force: true do |t|
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 20130618033754) do
     t.integer  "losses_on_offense"
     t.integer  "wins_on_defense"
     t.integer  "losses_on_defense"
-    t.float    "ELO_rating"
+    t.float    "elo_rating"
     t.string   "name"
     t.integer  "points_for"
     t.integer  "points_against"

@@ -20,19 +20,19 @@ class GamesController < ApplicationController
 		$player3 = Player.where(:name => @game.red_offense).first
 		$player4 = Player.where(:name => @game.red_defense).first
 
-		@game.blue_ELO = ($player1.ELO_rating + $player2.ELO_rating) / 2
-		@game.red_ELO = ($player3.ELO_rating + $player4.ELO_rating) / 2
+		@game.blue_elo = ($player1.ELO_rating + $player2.ELO_rating) / 2
+		@game.red_elo = ($player3.ELO_rating + $player4.ELO_rating) / 2
 
 		$ELO_swing = 15
 
-		if @game.blue_ELO > @game.red_ELO && @game.winner == "Blue Team"
-			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.red_ELO / @game.blue_ELO)/1.33333)
-		elsif @game.blue_ELO > @game.red_ELO && @game.winner == "Red Team"
-			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.blue_ELO / @game.red_ELO)*1.33333)
-		elsif @game.blue_ELO < @game.red_ELO && @game.winner == "Red Team"
-			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.blue_ELO / @game.red_ELO)/1.33333)
+		if @game.blue_elo > @game.red_elo && @game.winner == "Blue Team"
+			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.red_elo / @game.blue_elo)/1.33333)
+		elsif @game.blue_elo > @game.red_elo && @game.winner == "Red Team"
+			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.blue_elo / @game.red_elo)*1.33333)
+		elsif @game.blue_elo < @game.red_elo && @game.winner == "Red Team"
+			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.blue_elo / @game.red_elo)/1.33333)
 		else
-			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.red_ELO / @game.blue_ELO)*1.33333)	
+			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.red_elo / @game.blue_elo)*1.33333)	
 		end
 
 		if @game.losing_score == 0
@@ -40,10 +40,10 @@ class GamesController < ApplicationController
 		end
 
 		if @game.winner == "Red Team"
-			$player1.ELO_rating -= $ELO_swing
-			$player2.ELO_rating -= $ELO_swing
-			$player3.ELO_rating += $ELO_swing
-			$player4.ELO_rating += $ELO_swing
+			$player1.elo_rating -= $elo_swing
+			$player2.elo_rating -= $elo_swing
+			$player3.elo_rating += $elo_swing
+			$player4.elo_rating += $elo_swing
 
 			$player1.losses += 1
 			$player2.losses += 1
@@ -67,10 +67,10 @@ class GamesController < ApplicationController
 			$player4.points_for += @game.winning_score
 			$player4.points_against += @game.losing_score							
 		else
-			$player1.ELO_rating += $ELO_swing
-			$player2.ELO_rating += $ELO_swing
-			$player3.ELO_rating -= $ELO_swing
-			$player4.ELO_rating -= $ELO_swing
+			$player1.elo_rating += $ELO_swing
+			$player2.elo_rating += $ELO_swing
+			$player3.elo_rating -= $ELO_swing
+			$player4.elo_rating -= $ELO_swing
 
 			$player1.wins += 1
 			$player2.wins += 1
@@ -95,7 +95,7 @@ class GamesController < ApplicationController
 			$player4.points_against += @game.winning_score			
 		end
 
-		@game.ELO_swing = $ELO_swing
+		@game.elo_swing = $elo_swing
 		@game.save				
 
 		$player1.save

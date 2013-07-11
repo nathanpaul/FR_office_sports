@@ -26,7 +26,7 @@
 					%span.on_defense="#{p.wins_on_defense} - #{p.losses_on_defense}"
 					%span.points_for="#{p.points_for}"
 					%span.points_against="#{p.points_against}"
-					%span.ELO=number_with_precision(p.ELO_rating, :precision => 2)
+					%span.ELO=number_with_precision(p.elo_rating, :precision => 2)
 	%p.add_new_stuff
 		%span.add_player=link_to "Add Player", new_player_path
 		%span.add_new_game=link_to "Add a new game here!", new_game_path

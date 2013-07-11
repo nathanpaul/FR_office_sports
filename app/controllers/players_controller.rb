@@ -17,7 +17,7 @@ class PlayersController < ApplicationController
 	def sort_by_ELO
 		$rank = 1
 
-		Player.order("ELO_rating DESC").each do |p|
+		Player.order("elo_rating DESC").each do |p|
 			p.position = $rank
 			$rank += 1;
 			p.save
