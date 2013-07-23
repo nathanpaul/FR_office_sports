@@ -4,7 +4,8 @@
 	%span.quote "The greatest show on Earth..."
 %body
 	#container_left
-		%h1.players Player Rankings
+		%h1.players
+			%p.player_text Player Rankings
 		%ul.players_container
 			%li.player_row.header
 				%span.rank.header Rank
@@ -31,10 +32,12 @@
 					%span.points_for="#{p.points_for}"
 					%span.points_against="#{p.points_against}"
 					%span.ELO=number_with_precision(p.elo_rating, :precision => 2)
-	%p.add_new_stuff
-		%span.add_player=link_to "Add Player", new_player_path
-		%span.add_new_game=link_to "Add a new game here!", new_game_path
-	%p.last_game
-		-$last_game = Game.last
-		-unless $last_game == nil
-			%span.text="*The previous game between #{$last_game.blue_offense}/#{$last_game.blue_defense} and #{$last_game.red_offense}/#{$last_game.red_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+			%li.player_row.bottom		
+				%p.add_new_stuff
+					%span.add_player=button_to "Add Player", new_player_path, :class => "standard_button"
+					%span.add_new_game=button_to "Add a new game here!", new_game_path, :class => "standard_button"
+				%p.last_game
+					-$last_game = Game.last
+					-unless $last_game == nil
+						%span.text="*The previous game between #{$last_game.blue_offense}/#{$last_game.blue_defense} and #{$last_game.red_offense}/#{$last_game.red_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+			%li.footer
