@@ -25,7 +25,7 @@
 					%span.name=p.name
 					%span.games_played="#{p.wins + p.losses}"
 					%span.ones_record="#{$ones_wins} - #{$ones_losses}"
-					%span.twos_record="#{p.wins} - #{p.losses}"
+					%span.twos_record="#{p.wins - $ones_wins} - #{p.losses - $ones_losses}"
 					%span.on_offense="#{p.wins_on_offense} - #{p.losses_on_offense}"
 					%span.on_defense="#{p.wins_on_defense} - #{p.losses_on_defense}"
 					%span.points_for="#{p.points_for}"
