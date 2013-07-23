@@ -7,21 +7,25 @@
 		%h1.players Player Rankings
 		%ul.players_container
 			%li.player_row.header
-				%span.rank.header Ranking
+				%span.rank.header Rank
 				%span.name.header Name
 				%span.games_played.header GP
-				%span.record.header Record
+				%span.ones_record.header 1v1 Record
+				%span.twos_record.header 2v2 Record
 				%span.on_offense.header On Offense
 				%span.on_defense.header On Defense
 				%span.points_for.header PF
 				%span.points_against.header PA
 				%span.ELO.header Rating
 			-Player.order("position ASC").each do |p|
+				-$ones_wins = p.wins - p.wins_on_offense - p.wins_on_defense
+				-$ones_losses = p.losses - p.losses_on_offense - p.losses_on_defense
 				%li.player_row{:id => p.id}
 					%span.rank=p.position
 					%span.name=p.name
 					%span.games_played="#{p.wins + p.losses}"
-					%span.record="#{p.wins} - #{p.losses}"
+					%span.ones_record="#{$ones_wins} - #{$ones_losses}"
+					%span.twos_record="#{p.wins} - #{p.losses}"
 					%span.on_offense="#{p.wins_on_offense} - #{p.losses_on_offense}"
 					%span.on_defense="#{p.wins_on_defense} - #{p.losses_on_defense}"
 					%span.points_for="#{p.points_for}"
