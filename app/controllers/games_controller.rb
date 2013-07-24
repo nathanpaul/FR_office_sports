@@ -16,6 +16,12 @@ class GamesController < ApplicationController
 		end
 	end
 
+	def random_game
+		respond_to do |format|
+			format.html
+		end
+	end
+
 	def delete
 		$player1 = Player.where(:name => @game.blue_offense).first
 		$player2 = Player.where(:name => @game.blue_defense).first

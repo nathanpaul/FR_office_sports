@@ -9,6 +9,7 @@ FROfficeSports::Application.routes.draw do
 
   resources :players
   resources :games
+  get "games/random_game"
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

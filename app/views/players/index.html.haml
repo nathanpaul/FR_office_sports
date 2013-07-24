@@ -45,7 +45,8 @@
 			%li.player_row.bottom		
 				%p.add_new_stuff
 					%span.add_player=button_to "Add Player", new_player_path, :method => "get", :class => "standard_button"
-					%span.add_new_game=button_to "Add a new game here!", new_game_path, :method => "get", :class => "standard_button"
+					%span.add_new_game=button_to "Enter Game", new_game_path, :method => "get", :class => "standard_button"
+					%span.random=button_to "Random Game", games_random_game_path, :method => "get", :class => "standard_button"
 				%p.last_game
 					-$last_game = Game.last
 					-unless $last_game == nil
