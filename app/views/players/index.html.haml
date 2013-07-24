@@ -1,7 +1,9 @@
 %header
 	%span.logo= image_tag("FRlogo.png", alt: "Front Rush")
-	%span.title FOOSBALL
-	%span.quote "The greatest show on Earth..."
+	%span.foosball=image_tag("Foosball.png", :size => "48x36")
+	%span.foosball_text Foosball
+	%span.TT=image_tag("TT.png", :size => "48x36")
+	%span.TT_text Table Tennis (Coming Soon!)
 %body
 	#container_left
 		%h1.players
@@ -34,8 +36,8 @@
 					%span.ELO=number_with_precision(p.elo_rating, :precision => 2)
 			%li.player_row.bottom		
 				%p.add_new_stuff
-					%span.add_player=button_to "Add Player", new_player_path, :class => "standard_button"
-					%span.add_new_game=button_to "Add a new game here!", new_game_path, :class => "standard_button"
+					%span.add_player=button_to "Add Player", new_player_path, :method => "get", :class => "standard_button"
+					%span.add_new_game=button_to "Add a new game here!", new_game_path, :method => "get", :class => "standard_button"
 				%p.last_game
 					-$last_game = Game.last
 					-unless $last_game == nil
