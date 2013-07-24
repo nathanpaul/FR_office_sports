@@ -1,0 +1,2 @@
+class TtPlayersController < ApplicationController
+end

@@ -9,6 +9,8 @@ FROfficeSports::Application.routes.draw do
 
   resources :players
   resources :games
+  resources :tt_games
+  resources :tt_players
   get "games/random_game"
 
   # Example of regular route:

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20130711172117) do
+ActiveRecord::Schema.define(version: 20130724191544) do
 
   create_table "games", force: true do |t|
     t.datetime "created_at"
@@ -43,6 +43,29 @@ ActiveRecord::Schema.define(version: 20130711172117) do
     t.string   "name"
     t.integer  "points_for"
     t.integer  "points_against"
+    t.integer  "position"
+  end
+
+  create_table "tt_games", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "player_one"
+    t.string   "player_two"
+    t.integer  "winning_score"
+    t.integer  "losing_score"
+    t.string   "winner"
+    t.float    "elo_swing"
+  end
+
+  create_table "tt_players", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "wins"
+    t.integer  "losses"
+    t.float    "elo_rating"
+    t.string   "name"
+    t.integer  "games_for"
+    t.integer  "games_against"
     t.integer  "position"
   end
 

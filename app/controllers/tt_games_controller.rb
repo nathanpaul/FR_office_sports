@@ -1,0 +1,2 @@
+class TtGamesController < ApplicationController
+end
