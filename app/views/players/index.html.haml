@@ -19,6 +19,7 @@
 				%span.on_defense.header On Defense
 				%span.points_for.header PF
 				%span.points_against.header PA
+				%span.points_diff.header +/-
 				%span.ELO.header Rating
 			-Player.order("position ASC").each do |p|
 				-$ones_wins = p.wins - p.wins_on_offense - p.wins_on_defense
@@ -31,8 +32,15 @@
 					%span.twos_record="#{p.wins - $ones_wins} - #{p.losses - $ones_losses}"
 					%span.on_offense="#{p.wins_on_offense} - #{p.losses_on_offense}"
 					%span.on_defense="#{p.wins_on_defense} - #{p.losses_on_defense}"
+					-$points_diff = p.points_for - p.points_against
 					%span.points_for="#{p.points_for}"
 					%span.points_against="#{p.points_against}"
+					-if $points_diff > 0
+						%span.points_diff.green="+#{$points_diff}"
+					-elsif $points_diff < 0
+						%span.points_diff.red="#{$points_diff}"
+					-else
+						%span.points_diff="#{$points_diff}"
 					%span.ELO=number_with_precision(p.elo_rating, :precision => 2)
 			%li.player_row.bottom		
 				%p.add_new_stuff

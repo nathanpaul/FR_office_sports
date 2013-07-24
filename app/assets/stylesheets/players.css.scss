@@ -57,7 +57,7 @@ body{
 	// background: -o-linear-gradient(top, #999 44%,#fefefe 100%); /* Opera 11.10+ */
 	// background: -ms-linear-gradient(top, #999 44%,#fefefe 100%); /* IE10+ */
 	// background: linear-gradient(to bottom, #999 44%,#fefefe 100%); /* W3C */
-	width: 1100px;
+	width: 1160px;
 	margin-top: 50px;
 	margin-left: 105px;
 	color: #333;
@@ -65,7 +65,7 @@ body{
 	font-family: "Trebuchet MS",Trebuchet,Tahoma,Verdana,Arial,sans-serif;
 
 	#container_left{
-		width: 1100px;
+		width: 1160px;
 		min-width: 1100px;
 		height: auto;
 		// border-left: 2px solid #333;
@@ -76,7 +76,7 @@ body{
 		padding-top: 0px;
 		position: absolute;
 		left: 50%;
-		margin-left: -550px;
+		margin-left: -580px;
 		-moz-box-shadow: 0px 0px 40px #333;
 		-webkit-box-shadow: 0px 0px 40px #333;
 		box-shadow: 0px 0px 40px #333;
@@ -151,7 +151,7 @@ body{
 					border-right: 1px solid #666;
 				}				
 
-				.points_for, .points_against{
+				.points_for, .points_against, .points_diff{
 					float: left;
 					width: 60px;
 					border-right: 1px solid #666;
@@ -208,5 +208,13 @@ body{
 		 position:fixed;
 		 z-index:-1;
 		 margin-left: -1px;
+	}
+
+	.red{
+		color: #ff0000;
+	}
+
+	.green{
+		color: #00dd00;
 	}
 }
