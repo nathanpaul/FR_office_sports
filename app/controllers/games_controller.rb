@@ -25,16 +25,16 @@ class GamesController < ApplicationController
 		@game.blue_elo = ($player1.elo_rating + $player2.elo_rating) / 2
 		@game.red_elo = ($player3.elo_rating + $player4.elo_rating) / 2
 
-		$ELO_swing = 15
+		$ELO_swing = 10
 
 		if @game.blue_elo > @game.red_elo && @game.winner == "Blue Team"
-			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.red_elo / @game.blue_elo)/1.166667)
+			$ELO_swing = (10 + @game.winning_score - @game.losing_score)*((@game.red_elo / @game.blue_elo)/1.166667)
 		elsif @game.blue_elo > @game.red_elo && @game.winner == "Red Team"
-			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.blue_elo / @game.red_elo)*1.166667)
+			$ELO_swing = (10 + @game.winning_score - @game.losing_score)*((@game.blue_elo / @game.red_elo)*1.166667)
 		elsif @game.blue_elo < @game.red_elo && @game.winner == "Red Team"
-			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.blue_elo / @game.red_elo)/1.166667)
+			$ELO_swing = (10 + @game.winning_score - @game.losing_score)*((@game.blue_elo / @game.red_elo)/1.166667)
 		else
-			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.red_elo / @game.blue_elo)*1.166667)	
+			$ELO_swing = (10 + @game.winning_score - @game.losing_score)*((@game.red_elo / @game.blue_elo)*1.166667)	
 		end
 
 		if @game.losing_score == 0
@@ -124,16 +124,16 @@ class GamesController < ApplicationController
 		@game.blue_elo = ($player1.elo_rating + $player2.elo_rating) / 2
 		@game.red_elo = ($player3.elo_rating + $player4.elo_rating) / 2
 
-		$ELO_swing = 15
+		$ELO_swing = 10
 
 		if @game.blue_elo > @game.red_elo && @game.winner == "Blue Team"
-			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.red_elo / @game.blue_elo)/1.33333)
+			$ELO_swing = (10 + @game.winning_score - @game.losing_score)*((@game.red_elo / @game.blue_elo)/1.166667)
 		elsif @game.blue_elo > @game.red_elo && @game.winner == "Red Team"
-			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.blue_elo / @game.red_elo)*1.33333)
+			$ELO_swing = (10 + @game.winning_score - @game.losing_score)*((@game.blue_elo / @game.red_elo)*1.166667)
 		elsif @game.blue_elo < @game.red_elo && @game.winner == "Red Team"
-			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.blue_elo / @game.red_elo)/1.33333)
+			$ELO_swing = (10 + @game.winning_score - @game.losing_score)*((@game.blue_elo / @game.red_elo)/1.166667)
 		else
-			$ELO_swing = (15 + @game.winning_score - @game.losing_score)*((@game.red_elo / @game.blue_elo)*1.33333)	
+			$ELO_swing = (10 + @game.winning_score - @game.losing_score)*((@game.red_elo / @game.blue_elo)*1.166667)	
 		end
 
 		if @game.losing_score == 0
