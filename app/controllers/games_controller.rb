@@ -71,7 +71,7 @@ class GamesController < ApplicationController
 				$player3.wins_on_offense += 1
 				$player4.wins_on_defense += 1
 			else
-				$player1.wins += 1
+				$player1.losses += 1
 				$player3.wins += 1
 			end
 
@@ -104,7 +104,7 @@ class GamesController < ApplicationController
 				$player4.losses_on_defense += 1
 			else
 				$player1.wins += 1
-				$player3.wins += 1
+				$player3.losses += 1
 			end
 
 
