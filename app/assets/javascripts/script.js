@@ -4,9 +4,9 @@ function randomPlayer (){
 var players = [ document.getElementById("player1").value, 
 			  	document.getElementById("player2").value, 
 			   	document.getElementById("player3").value,
-			   	document.getElementById("player4").value,
-			   	document.getElementById("player5").value,
-			   	document.getElementById("player6").value 
+			   	document.getElementById("player4").value
+			   	//document.getElementById("player5").value,
+			   	//document.getElementById("player6").value 
 			  ]
 
 
