@@ -12,19 +12,19 @@ var players = [ document.getElementById("player1").value,
 
 			  //Takes random player from players array, then removes that player from the array
 
-			  randomPlayer1 = players[Math.floor(Math.random() * players.length)];
+			  var randomPlayer1 = players[Math.floor(Math.random() * players.length)];
 			  var index = players.indexOf(randomPlayer1);
 			  players.splice(index,1);
 
-			  randomPlayer2 = players[Math.floor(Math.random() * players.length)];
+			  var randomPlayer2 = players[Math.floor(Math.random() * players.length)];
 			  var index2 = players.indexOf(randomPlayer2);
 			  players.splice(index2,1);
 
-			  randomPlayer3 = players[Math.floor(Math.random() * players.length)];
+			  var randomPlayer3 = players[Math.floor(Math.random() * players.length)];
 			  var index3 = players.indexOf(randomPlayer3);
 			  players.splice(index3,1);
 
-			  randomPlayer4 = players[Math.floor(Math.random() * players.length)];
+			  var randomPlayer4 = players[Math.floor(Math.random() * players.length)];
 			  var index4 = players.indexOf(randomPlayer4);
 			  players.splice(index4,1);
 
