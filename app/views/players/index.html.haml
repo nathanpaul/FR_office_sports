@@ -5,6 +5,93 @@
 	%span.TT=link_to image_tag("TT.png", :size => "48x36"), "#"
 	%span.TT_text Table Tennis (Coming Soon!)
 %body
+	.modal
+	#centered_form.new_game
+		%h1 Create a new Game!
+		=form_for(@game) do |f|
+			.field
+				= f.label "Winning Score: "
+				= f.number_field :winning_score
+				%br/
+				= f.label "Losing Score: "
+				= f.number_field :losing_score
+				%br/
+				= f.label "Blue Offensive Player: "
+				= f.select(:blue_offense, Player.all.collect {|p| [ p.name ] }, {:include_blank => 'None'})
+				%br/
+				= f.label "Blue Defensive Player: "
+				= f.select(:blue_defense, Player.all.collect {|p| [ p.name ] }, {:include_blank => 'None'})
+				%br/
+				= f.label "Red Offensive Player: "
+				= f.select(:red_offense, Player.all.collect {|p| [ p.name ] }, {:include_blank => 'None'})
+				%br/
+				= f.label "Red Defensive Player: "
+				= f.select(:red_defense, Player.all.collect {|p| [ p.name ] }, {:include_blank => 'None'})
+				%br/
+				=f.label "Winner? "
+				= f.select :winner, ["Blue Team", "Red Team"]
+				%br/
+				%br/
+				=f.label "Password?"
+				=f.password_field :password
+			%br/
+			.actions
+				= f.submit
+	#centered_form.new_player
+		%h1 Create a new player!
+		= form_for(@player) do |f|
+			= f.hidden_field :wins, :value => 0
+			= f.hidden_field :losses, :value => 0
+			= f.hidden_field :wins_on_offense, :value => 0
+			= f.hidden_field :losses_on_offense, :value => 0
+			= f.hidden_field :wins_on_defense, :value => 0
+			= f.hidden_field :losses_on_defense, :value => 0
+			= f.hidden_field :elo_rating, :value => 1500
+			= f.hidden_field :points_for, :value => 0
+			= f.hidden_field :points_against, :value => 0
+			= f.hidden_field :position, :value => 1
+
+			.field
+				= f.label "Name"
+				= f.text_field :name
+			%br/
+			.actions
+				= f.submit
+	#centered_form.random_game
+		%h1 Type in 4 players and a random matchup will be displayed
+		%br/
+		%form{:autocomplete => "on", :onsubmit => "randomPlayer()"}
+			Player 1:
+			%input#player1{:type => "text"}/
+			%br/
+			Player 2:
+			%input#player2{:type => "text"}/
+			%br/
+			Player 3:
+			%input#player3{:type => "text"}/
+			%br/
+			Player 4:
+			%input#player4{:type => "text"}/
+			%br/
+			/ Player 5: <input type="text" id= "player5"><br>
+			/ Player 6: <input type="text" id= "player6"><br>
+			%br/
+			%br/
+			%input#assignTeam{:type => "checkbox", :value => "Yes"}/
+			Check to also Assign Offense & Defense
+			%br/
+			%br/
+			%br/
+			%input{:onclick => "randomPlayer()", :type => "button", :value => "Roll the dice!"}/
+		%br/
+		%p
+			Red Team:
+			%span#redTeam
+			%span#rankinG1
+		%p
+			Blue Team:
+			%span#blueTeam
+			%span#rankinG222
 	#container_left
 		%h1.players
 			%p.player_text Player Rankings
@@ -44,9 +131,9 @@
 					%span.ELO=number_with_precision(p.elo_rating, :precision => 2)
 			%li.player_row.bottom		
 				%p.add_new_stuff
-					%span.add_player=button_to "Add Player", new_player_path, :method => "get", :class => "standard_button"
-					%span.add_new_game=button_to "Enter Game", new_game_path, :method => "get", :class => "standard_button"
-					%span.random=button_to "Random Game", games_random_game_path, :method => "get", :class => "standard_button"
+					%span.add_player=button_to "Add Player", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_player_button"
+					%span.add_new_game=button_to "Enter Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_game_button"
+					%span.random=button_to "Random Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "random_game_button"
 				%p.last_game
 					-$last_game = Game.last
 					-unless $last_game == nil

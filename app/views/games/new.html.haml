@@ -1,5 +1,5 @@
 %h1 Create a new Game!
-=form_for(@game) do |f|
+=form_for(@game), :url => new_game_path, :method => "post" do |f|
 	.field
 		= f.label "Winning Score: "
 		= f.number_field :winning_score

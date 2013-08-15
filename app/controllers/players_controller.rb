@@ -2,6 +2,8 @@ class PlayersController < ApplicationController
 	before_action :sort_by_elo
 
 	def index
+		@game = Game.new
+		@player = Player.new
 	end
 
 	def new
@@ -12,6 +14,12 @@ class PlayersController < ApplicationController
 		@player = Player.new(params[:player])
 		@player.save
 		redirect_to players_path
+	end
+
+	def new_game
+		respond_to do |format|
+			format.js
+		end
 	end
 
 	def sort_by_elo
