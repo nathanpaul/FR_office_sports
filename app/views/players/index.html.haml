@@ -137,5 +137,8 @@
 				%p.last_game
 					-$last_game = Game.last
 					-unless $last_game == nil
-						%span.text="*The previous game between #{$last_game.blue_offense}/#{$last_game.blue_defense} and #{$last_game.red_offense}/#{$last_game.red_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+						-if $last_game.winner == "Red Team"
+							%span.text="*#{$last_game.red_offense}/#{$last_game.red_defense}'s #{$last_game.winning_sore}-#{$last_game.losing_score} victory over #{$last_game.blue_offense}/#{$last_game.blue_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+						-else
+							%span.text="*#{$last_game.blue_offense} and #{$last_game.blue_defense}'s #{$last_game.winning_score}-#{$last_game.losing_score} victory over #{$last_game.red_offense} and #{$last_game.red_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
 			%li.footer
