@@ -138,5 +138,5 @@
 							%span.text="*#{$last_game.red_offense}/#{$last_game.red_defense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.blue_offense}/#{$last_game.blue_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
 						-else
 							%span.text="*#{$last_game.blue_offense} and #{$last_game.blue_defense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.red_offense} and #{$last_game.red_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
-						%span.text=link_to "Delete this game", game_delete_last_game_path($last_game.id), :method => "put"
+						%span.text=link_to "Delete this game", game_delete_last_game_path($last_game.id), :method => "put", :confirm => "Are you sure you want to do that?"
 			%li.footer
