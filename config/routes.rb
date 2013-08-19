@@ -8,7 +8,9 @@ FROfficeSports::Application.routes.draw do
   root :to => 'players#index'
 
   resources :players
-  resources :games
+  resources :games do
+    put :delete_last_game
+  end
   resources :tt_games
   resources :tt_players
   get "games/random_game"
