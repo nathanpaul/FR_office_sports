@@ -104,7 +104,8 @@
 				%span.points_for.header PF
 				%span.points_against.header PA
 				%span.points_diff.header +/-
-				%span.ELO.header Rating
+				%span.ELO.season.header Fall 2013
+				%span.ELO.header Overall
 			-Player.order("position ASC").each do |p|
 				-$ones_wins = p.wins - p.wins_on_offense - p.wins_on_defense
 				-$ones_losses = p.losses - p.losses_on_offense - p.losses_on_defense
@@ -125,7 +126,8 @@
 						%span.points_diff.red="#{$points_diff}"
 					-else
 						%span.points_diff="#{$points_diff}"
-					%span.ELO=number_with_precision(p.elo_rating, :precision => 2)
+					%span.season_elo=number_with_precision(p.elo_rating, :precision => 2)
+					%span.ELO=number_with_precision(p.overall_elo, :precision => 2)
 			%li.player_row.bottom		
 				%p.add_new_stuff
 					%span.add_player=button_to "Add Player", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_player_button"
