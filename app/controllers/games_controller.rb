@@ -57,8 +57,12 @@ class GamesController < ApplicationController
 		if @game.winner == "Red Team"
 			$player1.elo_rating -= $ELO_swing
 			$player2.elo_rating -= $ELO_swing
+			$player1.overall_elo -= $ELO_swing
+			$player2.overall_elo -= $ELO_swing			
 			$player3.elo_rating += $ELO_swing
 			$player4.elo_rating += $ELO_swing
+			$player3.overall_elo += $ELO_swing
+			$player4.overall_elo += $ELO_swing			
 
 			unless $player1 == $player2 && $player3 == $player4
 				$player1.losses += 1
@@ -89,8 +93,12 @@ class GamesController < ApplicationController
 		else
 			$player1.elo_rating += $ELO_swing
 			$player2.elo_rating += $ELO_swing
+			$player1.overall_elo += $ELO_swing
+			$player2.overall_elo += $ELO_swing			
 			$player3.elo_rating -= $ELO_swing
 			$player4.elo_rating -= $ELO_swing
+			$player3.overall_elo -= $ELO_swing
+			$player4.overall_elo -= $ELO_swing			
 
 			unless $player1 == $player2 && $player3 == $player4
 				$player1.wins += 1
