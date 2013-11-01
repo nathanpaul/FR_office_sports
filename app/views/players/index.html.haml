@@ -111,7 +111,7 @@
 				-$ones_losses = p.losses - p.losses_on_offense - p.losses_on_defense
 				%li.player_row{:id => p.id}
 					%span.rank=p.position
-					-if p.name == "Bradlee" || p.name == "Squealy Potter"
+					-if p.name == "Bradlee" || p.name == "SQueaLy Potter"
 						%span.name=image_tag('skull.png', :size => "20x20", :alt => "shut out") + "  " + p.name
 					-else
 						%span.name=p.name
