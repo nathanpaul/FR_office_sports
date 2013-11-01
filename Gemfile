@@ -28,6 +28,7 @@ gem 'pg', :group => :production
 gem 'rails_12factor', :group => :production
 gem 'unicorn'
 gem "thin"
+gem "will_paginate"
 
 gem "protected_attributes"
 

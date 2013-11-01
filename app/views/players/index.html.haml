@@ -111,7 +111,10 @@
 				-$ones_losses = p.losses - p.losses_on_offense - p.losses_on_defense
 				%li.player_row{:id => p.id}
 					%span.rank=p.position
-					%span.name=p.name
+					-if p.name == "Bradlee" || p.name == "Squealy Potter"
+						%span.name=image_tag('skull.png', :size => "20x20", :alt => "shut out") + "  " + p.name
+					-else
+						%span.name=p.name
 					%span.games_played="#{p.wins + p.losses}"
 					%span.ones_record="#{$ones_wins} - #{$ones_losses}"
 					%span.twos_record="#{p.wins - $ones_wins} - #{p.losses - $ones_losses}"
