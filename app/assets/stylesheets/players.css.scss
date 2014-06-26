@@ -221,13 +221,19 @@ body{
 			margin-bottom: 5px;
 		}
 
-		.last_game{
+		.last_game, .skull{
+			margin-bottom: 5px;
+			margin-top: 5px;
 			font-size: 14px;
-			margin: 0px 0px 0px 0;
+			float: left;
 			color: #333;
 			margin-left: 20px;
 			text-align: left;
 			line-height: 1;
+		}
+
+		.skull{
+			margin-top: -20px;
 		}
 	}
 

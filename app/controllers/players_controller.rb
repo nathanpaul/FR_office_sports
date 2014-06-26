@@ -1,5 +1,6 @@
 class PlayersController < ApplicationController
 	before_action :sort_by_elo
+	helper_method :sort_column, :sort_direction
 
 	def index
 		@game = Game.new
