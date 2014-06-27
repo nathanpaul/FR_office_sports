@@ -62,13 +62,22 @@ class GamesController < ApplicationController
 			$player3.elo_rating += $ELO_swing
 			$player4.elo_rating += $ELO_swing
 			$player3.overall_elo += $ELO_swing
-			$player4.overall_elo += $ELO_swing			
+			$player4.overall_elo += $ELO_swing
 
 			unless $player1 == $player2 && $player3 == $player4
 				$player1.losses += 1
 				$player2.losses += 1
 				$player3.wins += 1
 				$player4.wins += 1
+
+				$player1.win_streak = 0
+				$player1.loss_streak+=1
+				$player2.win_streak = 0
+				$player2.loss_streak+=1
+				$player3.win_streak+=1
+				$player3.loss_streak = 0
+				$player4.win_streak+=1
+				$player4.loss_streak = 0
 
 				$player1.losses_on_offense += 1
 				$player2.losses_on_defense += 1
@@ -77,6 +86,11 @@ class GamesController < ApplicationController
 			else
 				$player1.losses += 1
 				$player3.wins += 1
+
+				$player1.win_streak = 0
+				$player1.loss_streak+=1
+				$player3.win_streak+=1
+				$player3.loss_streak = 0
 			end
 
 			$player1.points_for += @game.losing_score
@@ -106,6 +120,15 @@ class GamesController < ApplicationController
 				$player3.losses += 1
 				$player4.losses += 1
 
+				$player1.win_streak += 1
+				$player1.loss_streak = 0
+				$player2.win_streak += 1
+				$player2.loss_streak = 0
+				$player3.win_streak = 0
+				$player3.loss_streak  += 1
+				$player4.win_streak = 0
+				$player4.loss_streak += 1
+
 				$player1.wins_on_offense += 1
 				$player2.wins_on_defense += 1
 				$player3.losses_on_offense += 1
@@ -113,6 +136,11 @@ class GamesController < ApplicationController
 			else
 				$player1.wins += 1
 				$player3.losses += 1
+
+				$player1.win_streak += 1
+				$player1.loss_streak = 0
+				$player3.win_streak = 0
+				$player3.loss_streak  += 1
 			end
 
 
