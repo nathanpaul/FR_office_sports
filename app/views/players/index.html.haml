@@ -111,7 +111,10 @@
 				-$ones_losses = p.losses - p.losses_on_offense - p.losses_on_defense
 				%li.player_row{:id => p.id}
 					%span.rank=p.position
-					%span.name=p.name
+					-if p.name == "Bradlee" || p.name == "SQueaLy Potter"
+						%span.name=image_tag('skull.png', :size => "20x20", :alt => "shut out") + "  " + p.name
+					-else
+						%span.name=p.name
 					%span.games_played="#{p.wins + p.losses}"
 					%span.ones_record="#{$ones_wins} - #{$ones_losses}"
 					%span.twos_record="#{p.wins - $ones_wins} - #{p.losses - $ones_losses}"
@@ -145,4 +148,6 @@
 						-else
 							%span.text="*#{$last_game.blue_offense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.red_offense} in 1v1 had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
 						%span.text=link_to "Delete this game", game_delete_last_game_path($last_game.id), :method => "put", :confirm => "Are you sure you want to do that?"
+				%br/
+				%p.skull=image_tag('skull.png', :size => "20x20", :alt => "shut out") + "  " + "indicates a shut out occurred this season"
 			%li.footer
