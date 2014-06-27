@@ -25,29 +25,30 @@ class GamesController < ApplicationController
 	private
 
 	def calc_and_update_ELO
-		@current_season = Season.where(:current => 1).first
+		@seasonID = Season.where(:active => 1).first.id
+		
 		$player1 = Player.where(:name => @game.blue_offense).first
-		$player1ELO = SeasonalELO.where(:player => $player1, :season => @current_season).first
+		$player1ELO = SeasonalELO.where(:player_id => $player1.id, :season => @current_season).first
 		if $player1ELO == nil
-			$player1ELO = SeasonalELO.create(:player => $player1, :season => current_season, :elo => 1500)
+			$player1ELO = SeasonalELO.create(:player_id => $player1.id, :season => @seasonID, :elo => 1500)
 		end
 
 		$player2 = Player.where(:name => @game.blue_defense).first
-		$player2ELO = SeasonalELO.where(:player => $player2, :season => @current_season).first
+		$player2ELO = SeasonalELO.where(:player_id => $player2.id, :season => @current_season).first
 		if $player2ELO == nil
-			$player2ELO = SeasonalELO.create(:player => $player2, :season => current_season, :elo => 1500)
+			$player2ELO = SeasonalELO.create(:player_id => $player2.id, :season => @seasonID, :elo => 1500)
 		end
 
 		$player3 = Player.where(:name => @game.red_offense).first
-		$player3ELO = SeasonalELO.where(:player => $player3, :season => @current_season).first
+		$player3ELO = SeasonalELO.where(:player_id => $player3.id, :season => @current_season).first
 		if $player3ELO == nil
-			$player3ELO = SeasonalELO.create(:player => $player3, :season => current_season, :elo => 1500)
+			$player3ELO = SeasonalELO.create(:player_id => $player3.id, :season => @seasonID, :elo => 1500)
 		end
 
 		$player4 = Player.where(:name => @game.red_defense).first
-		$player4ELO = SeasonalELO.where(:player => $player4, :season => @current_season).first
+		$player4ELO = SeasonalELO.where(:player_id => $player4.id, :season => @current_season).first
 		if $player4ELO == nil
-			$player4ELO = SeasonalELO.create(:player => $player4, :season => current_season, :elo => 1500)
+			$player4ELO = SeasonalELO.create(:player_id => $player4.id, :season => @seasonID, :elo => 1500)
 		end	
 
 		@game.blue_elo = ($player1ELO.elo + $player2ELO.elo) / 2
@@ -110,12 +111,12 @@ class GamesController < ApplicationController
 			$player4.points_for += @game.winning_score
 			$player4.points_against += @game.losing_score							
 		else
-			$player1ELO += $ELO_swing
-			$player2ELO += $ELO_swing
+			$player1ELO.elo += $ELO_swing
+			$player2ELO.elo += $ELO_swing
 			$player1.overall_elo += $ELO_swing
 			$player2.overall_elo += $ELO_swing
-			$player3ELO -= $ELO_swing
-			$player4ELO -= $ELO_swing
+			$player3ELO.elo -= $ELO_swing
+			$player4ELO.elo -= $ELO_swing
 			$player3.overall_elo -= $ELO_swing
 			$player4.overall_elo -= $ELO_swing
 
@@ -154,7 +155,12 @@ class GamesController < ApplicationController
 		$player1.save
 		$player2.save
 		$player3.save
-		$player4.save		
+		$player4.save
+
+		$player1ELO.save
+		$player2ELO.save
+		$player3ELO.save
+		$player4ELO.save
 	end
 
 end

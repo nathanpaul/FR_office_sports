@@ -133,8 +133,8 @@
 					-else
 						%span.points_diff="#{$points_diff}"
 
-					-if (SeasonalELO.where(:season => $current_season, :player => p).first) == nil
-						%span.season_elo=number_with_precision(SeasonalELO.where(:season => $current_season, :player => p).first, :precision => 2)
+					-if SeasonalELO.where(:season => $current_season.id, :player_id => p.id).first != nil
+						%span.season_elo=number_with_precision(SeasonalELO.where(:season => $current_season.id, :player_id => p.id).first.elo, :precision => 2)
 					-else
 						%span.season_elo=1500.00
 
