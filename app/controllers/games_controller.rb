@@ -54,11 +54,35 @@ class GamesController < ApplicationController
 			$ELO_swing = $ELO_swing/2
 		end
 
+		if @game.losing_score == 0
+			if @game.winner == "Blue Team"
+				$player1.shutout_for += 1
+				$player2.shutout_for += 1
+				$player3.shutout_against += 1
+				$player4.shutout_against += 1
+
+				unless $player1 == $player2 && $player3 == $player4
+					$player1.shutout_for += 1
+					$player3.shutout_against += 1
+				end
+			else
+				$player4.shutout_for += 1
+				$player3.shutout_for += 1
+				$player2.shutout_against += 1
+				$player1.shutout_against += 1
+
+				unless $player1 == $player2 && $player3 == $player4
+					$player3.shutout_for += 1
+					$player1.shutout_against += 1
+				end
+			end
+		end
+
 		if @game.winner == "Red Team"
 			$player1.elo_rating -= $ELO_swing
 			$player2.elo_rating -= $ELO_swing
 			$player1.overall_elo -= $ELO_swing
-			$player2.overall_elo -= $ELO_swing			
+			$player2.overall_elo -= $ELO_swing
 			$player3.elo_rating += $ELO_swing
 			$player4.elo_rating += $ELO_swing
 			$player3.overall_elo += $ELO_swing
@@ -103,7 +127,7 @@ class GamesController < ApplicationController
 			$player3.points_against += @game.losing_score
 
 			$player4.points_for += @game.winning_score
-			$player4.points_against += @game.losing_score							
+			$player4.points_against += @game.losing_score					
 		else
 			$player1.elo_rating += $ELO_swing
 			$player2.elo_rating += $ELO_swing
