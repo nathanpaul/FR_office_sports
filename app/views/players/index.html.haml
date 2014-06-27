@@ -5,6 +5,7 @@
 	%span.TT=link_to image_tag("TT.png", :size => "48x36"), "#"
 	%span.TT_text Table Tennis (Coming Soon!)
 %body
+	-$current_season = Season.where(:active => 1).first
 	.modal
 	#centered_form.new_game
 		%h1 Create a new Game!
@@ -131,7 +132,12 @@
 						%span.points_diff.red="#{$points_diff}"
 					-else
 						%span.points_diff="#{$points_diff}"
-					%span.season_elo=number_with_precision(p.elo_rating, :precision => 2)
+
+					-if (SeasonalELO.where(:season => $current_season, :player => p).first) == nil
+						%span.season_elo=number_with_precision(SeasonalELO.where(:season => $current_season, :player => p).first, :precision => 2)
+					-else
+						%span.season_elo=1500.00
+
 					%span.ELO=number_with_precision(p.overall_elo, :precision => 2)
 			%li.player_row.bottom		
 				%p.add_new_stuff

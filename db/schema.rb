@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140627120000) do
+ActiveRecord::Schema.define(version: 20140627173055) do
 
   create_table "games", force: true do |t|
     t.datetime "created_at"
@@ -51,7 +51,7 @@ ActiveRecord::Schema.define(version: 20140627120000) do
   create_table "seasonal_elos", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "player"
+    t.integer  "player_id"
     t.integer  "season"
   end
 
