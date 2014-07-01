@@ -6,6 +6,11 @@ class PlayersController < ApplicationController
 		@season = Season.new
 		@game = Game.new
 		@player = Player.new
+		@current_season = Season.where(:active => 1).first
+
+		if @current_season == nil
+			@current_season = Season.create(:name => "Summer 2014", :active => 1)
+		end
 	end
 
 	def new

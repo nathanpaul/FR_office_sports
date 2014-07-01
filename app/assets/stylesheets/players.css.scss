@@ -121,6 +121,7 @@ body{
 
 		table.misc_stats {
 			margin-bottom: 30px;
+			width: 300px;
 
 			td {
 				border: none;
@@ -159,15 +160,36 @@ body{
 			line-height: 2.5;
 			margin-top: 0px;
 			margin-bottom: 0;
-			border-bottom: 2px solid #666;
 
 			p.player_text{
 				margin: 0 0 0 0px;
 			}			
 		}
 
+		#tabs {
+			height: 31px;
+
+			span {
+				background: #ffffff;
+				border-top: 1px solid #666;
+				border-right: 1px solid #666;
+				border-left: 1px solid #666;
+				cursor: pointer;
+				display: inline-block;
+				float: left;
+				margin: 0;
+				height: 30px;
+				line-height: 30px;
+				padding: 0 5px;
+			}
+		}
+
+		#tabs span.selected {
+			background: #e6e6e6;
+		}
+
 		.players_container{
-			list-style: none;
+			border-top: 2px solid #666;
 			padding-left: 0;
 			margin-top: 0;
 			margin-bottom: 0;
@@ -236,6 +258,7 @@ body{
 		background: lighten(#ef9920, 30%);
 		padding-bottom: 5px;
 		border-bottom: 2px solid #ef9920;
+		height: 35px;
 
 		.add_new_stuff{
 			margin-top: 0px;
