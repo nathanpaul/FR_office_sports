@@ -5,7 +5,6 @@
 	%span.TT=link_to image_tag("TT.png", :size => "48x36"), "#"
 	%span.TT_text Table Tennis (Coming Soon!)
 %body
-	-$current_season = Season.where(:active => 1).first
 	-$rank = 1
 	.modal
 	#centered_form.new_game
@@ -141,6 +140,9 @@
 	#container_left
 		%h1.players
 			%p.player_text Player Rankings
+		#tabs
+			%span#active.selected="Active"
+			%span#inactive="Inactive"
 		%div.players_container
 			%table
 				%tr.player_row.header
@@ -154,7 +156,7 @@
 					%td.points_for.header PF
 					%td.points_against.header PA
 					%td.points_diff.header +/-
-					%td.ELO.season.header #{$current_season.name}
+					%td.ELO.season.header #{@current_season.name}
 					%td.ELO.header Overall
 				-Player.order("overall_elo DESC").each do |p|
 					-$ones_wins = p.wins - p.wins_on_offense - p.wins_on_defense
@@ -177,12 +179,12 @@
 							%td.points_diff.red="#{$points_diff}"
 						-else
 							%td.points_diff="#{$points_diff}"
-						-if SeasonalELO.where(:season => $current_season.id, :player_id => p.id).first != nil
-							%td.season_elo=number_with_precision(SeasonalELO.where(:season => $current_season.id, :player_id => p.id).first.elo, :precision => 2)
+						-if SeasonalELO.where(:season => @current_season.id, :player_id => p.id).first != nil
+							%td.season_elo=number_with_precision(SeasonalELO.where(:season => @current_season.id, :player_id => p.id).first.elo, :precision => 2)
 						-else
 							%td.season_elo=1500.00
 						%td.ELO=number_with_precision(p.overall_elo, :precision => 2)
-		%div.player_row.bottom		
+		%div.player_row.bottom
 			%p.add_new_stuff
 				%span.add_player=button_to "Add Player", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_player_button"
 				%span.add_new_game=button_to "Enter Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_game_button"
