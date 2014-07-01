@@ -103,72 +103,101 @@
 				%br/
 				.actions
 					=s.submit
+	-Player.where(:active => 1).each do |p|
+		#centered_form.statistics{:player_id => p.id}
+			.close="X"
+			%h1.center="#{p.name}'s Stats"
+			%table.misc_stats
+				%tr
+					%td="Biggest Win Streak"
+					%td
+				%tr
+					%td="Biggest Lose Streak"
+					%td
+				%tr
+					%td="Current Streak"
+					%td
+				%tr
+					%td="Shut Outs For"
+					%td
+				%tr
+					%td="Shut Outs Against"
+					%td
+				%tr
+					%td="Most Common Partner"
+					%td
+			%table
+				%tr.elo.header
+					%td.season.header="Season"
+					%td.elo.header="ELO"
+				-Season.all.order("id ASC").each do |s|
+					-$se = SeasonalELO.where(:player_id => p.id, :season => s.id).first
+					%tr.elo{:season_id => s.id}
+						%td.season="#{s.name}"
+						-if $se != nil
+							%td.elo=number_with_precision($se.elo, :precision => 2)
+						-else
+							%td.elo="--NO DATA--"
 	#container_left
 		%h1.players
 			%p.player_text Player Rankings
-		%table.players_container
-			%th.player_row.header
-				%span.rank.header Rank
-				%span.name.header Name
-				%span.games_played.header GP
-				%span.ones_record.header 1v1 Record
-				%span.twos_record.header 2v2 Record
-				%span.on_offense.header On Offense
-				%span.on_defense.header On Defense
-				%span.points_for.header PF
-				%span.points_against.header PA
-				%span.points_diff.header +/-
-				%span.ELO.season.header #{$current_season.name}
-				%span.ELO.header Overall
-			-Player.order("overall_elo DESC").each do |p|
-				-$ones_wins = p.wins - p.wins_on_offense - p.wins_on_defense
-				-$ones_losses = p.losses - p.losses_on_offense - p.losses_on_defense
-				%tr.player_row{:id => p.id}
-					%span.rank=$rank
-					-$rank = $rank + 1
-					-if p.name == "Bradlee" || p.name == "SQueaLy Potter"
-						%span.name=image_tag('skull.png', :size => "20x20", :alt => "shut out") + "  " + p.name
-					-else
-						%span.name=p.name
-					%span.games_played="#{p.wins + p.losses}"
-					%span.ones_record="#{$ones_wins} - #{$ones_losses}"
-					%span.twos_record="#{p.wins - $ones_wins} - #{p.losses - $ones_losses}"
-					%span.on_offense="#{p.wins_on_offense} - #{p.losses_on_offense}"
-					%span.on_defense="#{p.wins_on_defense} - #{p.losses_on_defense}"
-					-$points_diff = p.points_for - p.points_against
-					%span.points_for="#{p.points_for}"
-					%span.points_against="#{p.points_against}"
-					-if $points_diff > 0
-						%span.points_diff.green="+#{$points_diff}"
-					-elsif $points_diff < 0
-						%span.points_diff.red="#{$points_diff}"
-					-else
-						%span.points_diff="#{$points_diff}"
-
-					-if SeasonalELO.where(:season => $current_season.id, :player_id => p.id).first != nil
-						%span.season_elo=number_with_precision(SeasonalELO.where(:season => $current_season.id, :player_id => p.id).first.elo, :precision => 2)
-					-else
-						%span.season_elo=1500.00
-
-					%span.ELO=number_with_precision(p.overall_elo, :precision => 2)
-			%div.player_row.bottom		
-				%p.add_new_stuff
-					%span.add_player=button_to "Add Player", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_player_button"
-					%span.add_new_game=button_to "Enter Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_game_button"
-					%span.random=button_to "Random Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "random_game_button"
-					%span=button_to "Start New Season", "#", :remote => true, :method => "get", :class => "standard_button", :id=> "new_season_button"
-				%p.last_game
-					-$last_game = Game.last
-					-unless $last_game == nil
-						-if $last_game.winner == "Red Team" and $last_game.red_offense != $last_game.red_defense
-							%span.text="*#{$last_game.red_offense} and #{$last_game.red_defense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.blue_offense} and #{$last_game.blue_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
-						-elsif $last_game.winner == "Blue Team" and $last_game.blue_offense != $last_game.blue_defense
-							%span.text="*#{$last_game.blue_offense} and #{$last_game.blue_defense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.red_offense} and #{$last_game.red_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
-						-elsif $last_game.winner == "Red Team" and $last_game.red_offense == $last_game.red_defense
-							%span.text="*#{$last_game.red_offense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.blue_offense} in 1v1 had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+		%div.players_container
+			%table
+				%tr.player_row.header
+					%td.rank.header Rank
+					%td.name.header Name
+					%td.games_played.header GP
+					%td.ones_record.header 1v1 Record
+					%td.twos_record.header 2v2 Record
+					%td.on_offense.header On Offense
+					%td.on_defense.header On Defense
+					%td.points_for.header PF
+					%td.points_against.header PA
+					%td.points_diff.header +/-
+					%td.ELO.season.header #{$current_season.name}
+					%td.ELO.header Overall
+				-Player.order("overall_elo DESC").each do |p|
+					-$ones_wins = p.wins - p.wins_on_offense - p.wins_on_defense
+					-$ones_losses = p.losses - p.losses_on_offense - p.losses_on_defense
+					%tr.player_row{:id => p.id}
+						%td.rank=$rank
+						-$rank = $rank + 1
+						%td.name=p.name
+						%td.games_played="#{p.wins + p.losses}"
+						%td.ones_record="#{$ones_wins} - #{$ones_losses}"
+						%td.twos_record="#{p.wins - $ones_wins} - #{p.losses - $ones_losses}"
+						%td.on_offense="#{p.wins_on_offense} - #{p.losses_on_offense}"
+						%td.on_defense="#{p.wins_on_defense} - #{p.losses_on_defense}"
+						-$points_diff = p.points_for - p.points_against
+						%td.points_for="#{p.points_for}"
+						%td.points_against="#{p.points_against}"
+						-if $points_diff > 0
+							%td.points_diff.green="+#{$points_diff}"
+						-elsif $points_diff < 0
+							%td.points_diff.red="#{$points_diff}"
 						-else
-							%span.text="*#{$last_game.blue_offense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.red_offense} in 1v1 had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
-						%span.text=link_to "Delete this game", game_delete_last_game_path($last_game.id), :method => "put", :confirm => "Are you sure you want to do that?"
-				%br/
-				%p.skull=image_tag('skull.png', :size => "20x20", :alt => "shut out") + "  " + "indicates a shut out occurred this season"
-			%div.footer
+							%td.points_diff="#{$points_diff}"
+						-if SeasonalELO.where(:season => $current_season.id, :player_id => p.id).first != nil
+							%td.season_elo=number_with_precision(SeasonalELO.where(:season => $current_season.id, :player_id => p.id).first.elo, :precision => 2)
+						-else
+							%td.season_elo=1500.00
+						%td.ELO=number_with_precision(p.overall_elo, :precision => 2)
+		%div.player_row.bottom		
+			%p.add_new_stuff
+				%span.add_player=button_to "Add Player", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_player_button"
+				%span.add_new_game=button_to "Enter Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_game_button"
+				%span.random=button_to "Random Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "random_game_button"
+				%span.season=button_to "Start New Season", "#", :remote => true, :method => "get", :class => "standard_button", :id=> "new_season_button"
+			%p.last_game
+				-$last_game = Game.last
+				-unless $last_game == nil
+					-if $last_game.winner == "Red Team" and $last_game.red_offense != $last_game.red_defense
+						%span.text="*#{$last_game.red_offense} and #{$last_game.red_defense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.blue_offense} and #{$last_game.blue_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+					-elsif $last_game.winner == "Blue Team" and $last_game.blue_offense != $last_game.blue_defense
+						%span.text="*#{$last_game.blue_offense} and #{$last_game.blue_defense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.red_offense} and #{$last_game.red_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+					-elsif $last_game.winner == "Red Team" and $last_game.red_offense == $last_game.red_defense
+						%span.text="*#{$last_game.red_offense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.blue_offense} in 1v1 had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+					-else
+						%span.text="*#{$last_game.blue_offense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.red_offense} in 1v1 had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+					%span.text=link_to "Delete this game", game_delete_last_game_path($last_game.id), :method => "put", :confirm => "Are you sure you want to do that?"
+			%br/
