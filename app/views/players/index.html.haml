@@ -47,6 +47,11 @@
 			= f.hidden_field :points_for, :value => 0
 			= f.hidden_field :points_against, :value => 0
 			= f.hidden_field :position, :value => 1
+			= f.hidden_field :win_streak, :value => 0
+			= f.hidden_field :loss_streak, :value => 0
+			= f.hidden_field :shutout_for, :value => 0
+			= f.hidden_field :overall_elo, :value => 0
+			= f.hidden_field :shutout_against, :value => 0
 
 			.field
 				= f.label "Name"
@@ -111,7 +116,32 @@
 				-$ones_losses = p.losses - p.losses_on_offense - p.losses_on_defense
 				%li.player_row{:id => p.id}
 					%span.rank=p.position
-					%span.name=p.name
+					-$shutout_for_rating = 0
+					-$shutout_against_rating = 0
+					-$total = p.wins + p.losses
+					-if($total > 0)
+						-if(p.shutout_for > 0)
+							-$shutout_for_rating = p.shutout_for.to_f/$total
+						-if(p.shutout_against > 0)
+							-$shutout_against_rating = p.shutout_against.to_f/$total
+					-logger.debug "Name: #{p.name}"
+					-logger.debug "Shut out for rating: #{$shutout_for_rating}"
+					-logger.debug "Shut out against rating: #{$shutout_against_rating}"
+					-logger.debug "Shut out for: #{p.shutout_for}"
+					-logger.debug "Shut out against: #{p.shutout_against}"
+					-logger.debug "Win Streak: #{p.win_streak}"
+					-logger.debug "Loss Streak: #{p.loss_streak}"
+					-logger.debug "Total: #{$total}"
+					-if $shutout_for_rating > 0.03
+						%span.name=image_tag('crown.gif', :size => "20x20", :alt => "master") + "  " + p.name
+					-elsif $total == 0
+						%span.name=image_tag('baby.gif', :size => "20x20", :alt => "up and comer") + "  " + p.name
+					-elsif p.shutout_for > 0
+						%span.name=image_tag('sword.png', :size => "20x20", :alt => "up and comer") + "  " + p.name
+					-elsif $shutout_against_rating > 0.015 && $total > 5
+						%span.name=image_tag('skull.png', :size => "20x20", :alt => "scrub") + "  " + p.name
+					-else
+						%span.name=p.name
 					%span.games_played="#{p.wins + p.losses}"
 					%span.ones_record="#{$ones_wins} - #{$ones_losses}"
 					%span.twos_record="#{p.wins - $ones_wins} - #{p.losses - $ones_losses}"
@@ -145,4 +175,6 @@
 						-else
 							%span.text="*#{$last_game.blue_offense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.red_offense} in 1v1 had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
 						%span.text=link_to "Delete this game", game_delete_last_game_path($last_game.id), :method => "put", :confirm => "Are you sure you want to do that?"
+				%br/
+				%p.skull=image_tag('skull.png', :size => "20x20", :alt => "shut out") + "  " + "indicates a shut out occurred this season"
 			%li.footer
