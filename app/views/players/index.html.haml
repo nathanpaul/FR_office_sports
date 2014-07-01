@@ -5,6 +5,8 @@
 	%span.TT=link_to image_tag("TT.png", :size => "48x36"), "#"
 	%span.TT_text Table Tennis (Coming Soon!)
 %body
+	-$current_season = Season.where(:active => 1).first
+	-$rank = 1
 	.modal
 	#centered_form.new_game
 		%h1 Create a new Game!
@@ -44,6 +46,8 @@
 			= f.hidden_field :wins_on_defense, :value => 0
 			= f.hidden_field :losses_on_defense, :value => 0
 			= f.hidden_field :elo_rating, :value => 1500
+			= f.hidden_field :overall_elo, :value => 1500
+			= f.hidden_field :active, :value => 1
 			= f.hidden_field :points_for, :value => 0
 			= f.hidden_field :points_against, :value => 0
 			= f.hidden_field :position, :value => 1
@@ -89,6 +93,16 @@
 			Blue Team:
 			%span#blueTeam
 			%span#rankinG222
+	#centered_form.season
+		%h1 Start a new season
+		%br/
+		=form_for(@season) do |s|
+			.field
+				= s.label "Season name: "
+				= s.text_field :name
+				%br/
+				.actions
+					=s.submit
 	#container_left
 		%h1.players
 			%p.player_text Player Rankings
@@ -104,13 +118,14 @@
 				%span.points_for.header PF
 				%span.points_against.header PA
 				%span.points_diff.header +/-
-				%span.ELO.season.header Fall 2013
+				%span.ELO.season.header #{$current_season.name}
 				%span.ELO.header Overall
-			-Player.order("position ASC").each do |p|
+			-Player.order("overall_elo DESC").each do |p|
 				-$ones_wins = p.wins - p.wins_on_offense - p.wins_on_defense
 				-$ones_losses = p.losses - p.losses_on_offense - p.losses_on_defense
 				%li.player_row{:id => p.id}
-					%span.rank=p.position
+					%span.rank=$rank
+					-$rank = $rank + 1
 					-if p.name == "Bradlee" || p.name == "SQueaLy Potter"
 						%span.name=image_tag('skull.png', :size => "20x20", :alt => "shut out") + "  " + p.name
 					-else
@@ -129,13 +144,19 @@
 						%span.points_diff.red="#{$points_diff}"
 					-else
 						%span.points_diff="#{$points_diff}"
-					%span.season_elo=number_with_precision(p.elo_rating, :precision => 2)
+
+					-if SeasonalELO.where(:season => $current_season.id, :player_id => p.id).first != nil
+						%span.season_elo=number_with_precision(SeasonalELO.where(:season => $current_season.id, :player_id => p.id).first.elo, :precision => 2)
+					-else
+						%span.season_elo=1500.00
+
 					%span.ELO=number_with_precision(p.overall_elo, :precision => 2)
 			%li.player_row.bottom		
 				%p.add_new_stuff
 					%span.add_player=button_to "Add Player", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_player_button"
 					%span.add_new_game=button_to "Enter Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_game_button"
 					%span.random=button_to "Random Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "random_game_button"
+					%span=button_to "Start New Season", "#", :remote => true, :method => "get", :class => "standard_button", :id=> "new_season_button"
 				%p.last_game
 					-$last_game = Game.last
 					-unless $last_game == nil

@@ -48,4 +48,10 @@ $ ->
 
 	$('#random_game_button').on 'click', () ->
 		$(".modal").show()
-		$("#centered_form.random_game").show()		
+		$("#centered_form.random_game").show()
+
+	$('#new_season_button').on 'click', () ->
+		$(".modal").show()
+		$("#centered_form.season").show()
+
+	foo = 1
