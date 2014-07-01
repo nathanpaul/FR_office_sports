@@ -26,27 +26,28 @@ class GamesController < ApplicationController
 
 	def calc_and_update_ELO
 		@seasonID = Season.where(:active => 1).first.id
-		
+
 		$player1 = Player.where(:name => @game.blue_offense).first
-		$player1ELO = SeasonalELO.where(:player_id => $player1.id, :season => @current_season).first
+		$player1ELO = SeasonalELO.where(:player_id => $player1.id, :season => @seasonID).first
 		if $player1ELO == nil
 			$player1ELO = SeasonalELO.create(:player_id => $player1.id, :season => @seasonID, :elo => 1500)
+			puts "--OH SHITE--"
 		end
 
 		$player2 = Player.where(:name => @game.blue_defense).first
-		$player2ELO = SeasonalELO.where(:player_id => $player2.id, :season => @current_season).first
+		$player2ELO = SeasonalELO.where(:player_id => $player2.id, :season => @seasonID).first
 		if $player2ELO == nil
 			$player2ELO = SeasonalELO.create(:player_id => $player2.id, :season => @seasonID, :elo => 1500)
 		end
 
 		$player3 = Player.where(:name => @game.red_offense).first
-		$player3ELO = SeasonalELO.where(:player_id => $player3.id, :season => @current_season).first
+		$player3ELO = SeasonalELO.where(:player_id => $player3.id, :season => @seasonID).first
 		if $player3ELO == nil
 			$player3ELO = SeasonalELO.create(:player_id => $player3.id, :season => @seasonID, :elo => 1500)
 		end
 
 		$player4 = Player.where(:name => @game.red_defense).first
-		$player4ELO = SeasonalELO.where(:player_id => $player4.id, :season => @current_season).first
+		$player4ELO = SeasonalELO.where(:player_id => $player4.id, :season => @seasonID).first
 		if $player4ELO == nil
 			$player4ELO = SeasonalELO.create(:player_id => $player4.id, :season => @seasonID, :elo => 1500)
 		end	
