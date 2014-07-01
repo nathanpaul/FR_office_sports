@@ -13,6 +13,8 @@ FROfficeSports::Application.routes.draw do
   end
   resources :tt_games
   resources :tt_players
+  resources :seasons
+
   get "games/random_game"
 
   # Example of regular route:
