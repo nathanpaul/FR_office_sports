@@ -102,7 +102,7 @@
 				%br/
 				.actions
 					=s.submit
-	-Player.where(:active => 1).each do |p|
+	-Player.all.each do |p|
 		#centered_form.statistics{:player_id => p.id}
 			.close="X"
 			%h1.center="#{p.name}'s Stats"
