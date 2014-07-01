@@ -57,10 +57,10 @@ ActiveRecord::Schema.define(version: 20140627202913) do
   end
 
   create_table "seasons", force: true do |t|
+    t.string   "name"
+    t.integer  "active"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "active"
-    t.string   "name"
   end
 
   create_table "tt_games", force: true do |t|
