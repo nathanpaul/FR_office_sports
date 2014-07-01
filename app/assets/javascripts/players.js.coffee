@@ -65,4 +65,9 @@ $ ->
 		$(".modal").hide()
 		$("#centered_form.statistics").hide()
 
+	$('.edit-player-link').on 'click', () ->
+		divSelector = ".edit-" + this.attributes['player_id'].value
+		$(this).parent().hide()
+		$(divSelector).show()
+
 	foo = 1

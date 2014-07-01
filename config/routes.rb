@@ -7,7 +7,10 @@ FROfficeSports::Application.routes.draw do
 
   root :to => 'players#index'
 
-  resources :players
+  resources :players do
+    get :sort_active
+    get :sort_inactive
+  end
   resources :games do
     put :delete_last_game
   end
