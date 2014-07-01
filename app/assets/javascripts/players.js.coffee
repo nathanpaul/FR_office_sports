@@ -41,6 +41,8 @@ $ ->
 		$("#centered_form.new_player").hide()
 		$("#centered_form.new_game").hide()
 		$("#centered_form.random_game").hide()
+		$("#centered_form.season").hide()
+		$("#centered_form.statistics").hide()
 
 	$('#new_player_button').on 'click', () ->
 		$(".modal").show()
@@ -53,5 +55,14 @@ $ ->
 	$('#new_season_button').on 'click', () ->
 		$(".modal").show()
 		$("#centered_form.season").show()
+
+	$('td.name').on 'click', () ->
+		divSelector = ".statistics[player_id=" + this.parentElement.id + "]"
+		$(".modal").show()
+		$(divSelector).show()
+
+	$('.statistics .close').on 'click', () ->
+		$(".modal").hide()
+		$("#centered_form.statistics").hide()
 
 	foo = 1

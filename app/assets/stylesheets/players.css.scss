@@ -64,6 +64,23 @@ body{
 	overflow: visible;
 	font-family: "Trebuchet MS",Trebuchet,Tahoma,Verdana,Arial,sans-serif;
 
+	table {
+		border-spacing: 0px;
+		width: 100%;
+
+		td {
+			background: #ffffff;
+			border-bottom: 1px solid #666;
+			border-right: 1px solid #666;
+			text-align: center;
+		}
+
+		td.header {
+			background: lighten(#999, 30%);
+			border-bottom: 1px dotted #666;
+		}
+	}
+
 	.modal{
 		display: none;
 		position: fixed;
@@ -93,6 +110,28 @@ body{
 				font-size: 20px;
 			}
 		}
+
+		td {
+			border-left: 1px solid #666;
+		}
+
+		td.header {
+			border-top: 1px solid #666;
+		}
+
+		table.misc_stats {
+			margin-bottom: 30px;
+
+			td {
+				border: none;
+				text-align: left;
+			}
+		}
+	}
+
+	#centered_form.statistics .close {
+		cursor: pointer;
+		float:right;
 	}
 
 	#container_left{
@@ -101,7 +140,7 @@ body{
 		height: auto;
 		// border-left: 2px solid #333;
 		// border-right: 2px solid #333;
-		background: #ffffff;
+		background: #f9daaf;
 		overflow-y: hidden;
 		padding: 0px 0px;
 		padding-top: 0px;
@@ -137,65 +176,47 @@ body{
 			.header{
 				font-weight: 800;
 				line-height: 1.8;
-				text-decoration: underline;
 				text-align: center;
-				background: lighten(#999, 30%);
 			}			
 
 			.player_row{
 				line-height: 3;
-				float: left;
 				width: 100%;
-				text-align: center;
 				border-bottom: 1px dotted #666;
 
 				.rank{
-					float: left;
-					text-align: center;
 					width: 70px;
-					border-right: 1px solid #666;
 				}
 
-				.name, .name_header{
-					float: left;
-					text-align: center;
-					width: 200px;
-					border-right: 1px solid #666;
+				.name.header{
+					cursor: default;
+					text-decoration: none;
+					width: 175px;
+				}
+
+				.name {
+					cursor: pointer;
+					text-decoration: underline;
 				}
 
 				.games_played{
-					float: left;
 					width: 70px;
-					border-right: 1px solid #666;
 				}				
 
 				.ones_record, .twos_record{
-					float: left;
-					text-align: center;
 					width: 120px;
-					border-right: 1px solid #666;
 				}
 
 				.on_offense, .on_defense{
-					float: left;
 					width:120px;
-					border-right: 1px solid #666;
 				}				
 
 				.points_for, .points_against, .points_diff{
-					float: left;
 					width: 60px;
-					border-right: 1px solid #666;
 				}
 
-				.season_elo, .season.header{
-					border-right: 1px solid #666;
-				}						
-
 				.ELO, .ELO_header, .season_elo{
-					float: left;
 					width: 115px;
-					text-align: center;
 				}
 
 			}
@@ -211,7 +232,7 @@ body{
 		font-size: 14px;
 	}
 
-	li.player_row.bottom{
+	.player_row.bottom{
 		background: lighten(#ef9920, 30%);
 		padding-bottom: 5px;
 		border-bottom: 2px solid #ef9920;
@@ -237,7 +258,12 @@ body{
 		}
 	}
 
-	li.footer{
+	.statistics {
+		display: none;
+		z-index: 2;
+	}
+
+	.footer{
 		 clear:both;
 		 color:#333;
 		 background:#666;
@@ -257,5 +283,9 @@ body{
 
 	.green{
 		color: #00dd00;
+	}
+
+	.center {
+		text-align: center;
 	}
 }
