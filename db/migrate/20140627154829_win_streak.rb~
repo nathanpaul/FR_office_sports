@@ -1,0 +1,4 @@
+class WinStreak < ActiveRecord::Migration
+  def change
+  end
+end

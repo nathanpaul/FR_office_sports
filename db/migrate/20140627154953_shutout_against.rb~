@@ -1,0 +1,4 @@
+class ShutoutAgainst < ActiveRecord::Migration
+  def change
+  end
+end

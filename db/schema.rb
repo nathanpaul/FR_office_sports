@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131018180734) do
+ActiveRecord::Schema.define(version: 20140627160721) do
 
   create_table "games", force: true do |t|
     t.datetime "created_at"
@@ -45,6 +45,10 @@ ActiveRecord::Schema.define(version: 20131018180734) do
     t.integer  "points_against"
     t.integer  "position"
     t.float    "overall_elo"
+    t.integer  "win_streak"
+    t.integer  "loss_streak"
+    t.integer  "shutout_for"
+    t.integer  "shutout_against"
   end
 
   create_table "tt_games", force: true do |t|
