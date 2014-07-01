@@ -3,7 +3,6 @@ class CreateSeasons < ActiveRecord::Migration
     create_table :seasons do |t|
       t.string :name
       t.integer :active
-
       t.timestamps
     end
   end

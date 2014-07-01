@@ -3,6 +3,7 @@ class PlayersController < ApplicationController
 	helper_method :sort_column, :sort_direction
 
 	def index
+		@season = Season.new
 		@game = Game.new
 		@player = Player.new
 	end
