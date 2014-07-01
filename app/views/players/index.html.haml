@@ -106,8 +106,8 @@
 	#container_left
 		%h1.players
 			%p.player_text Player Rankings
-		%ul.players_container
-			%li.player_row.header
+		%table.players_container
+			%th.player_row.header
 				%span.rank.header Rank
 				%span.name.header Name
 				%span.games_played.header GP
@@ -123,7 +123,7 @@
 			-Player.order("overall_elo DESC").each do |p|
 				-$ones_wins = p.wins - p.wins_on_offense - p.wins_on_defense
 				-$ones_losses = p.losses - p.losses_on_offense - p.losses_on_defense
-				%li.player_row{:id => p.id}
+				%tr.player_row{:id => p.id}
 					%span.rank=$rank
 					-$rank = $rank + 1
 					-if p.name == "Bradlee" || p.name == "SQueaLy Potter"
@@ -151,7 +151,7 @@
 						%span.season_elo=1500.00
 
 					%span.ELO=number_with_precision(p.overall_elo, :precision => 2)
-			%li.player_row.bottom		
+			%div.player_row.bottom		
 				%p.add_new_stuff
 					%span.add_player=button_to "Add Player", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_player_button"
 					%span.add_new_game=button_to "Enter Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_game_button"
@@ -171,4 +171,4 @@
 						%span.text=link_to "Delete this game", game_delete_last_game_path($last_game.id), :method => "put", :confirm => "Are you sure you want to do that?"
 				%br/
 				%p.skull=image_tag('skull.png', :size => "20x20", :alt => "shut out") + "  " + "indicates a shut out occurred this season"
-			%li.footer
+			%div.footer
