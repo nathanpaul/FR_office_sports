@@ -18,7 +18,133 @@ class GamesController < ApplicationController
 	end
 
 	def delete_last_game
-		Game.remove_last_game
+		seasonID = Season.where(:active => 1)
+
+		redO = Player.find(Game.last.red_offense)
+		redD = Player.find(Game.last.red_defense)
+		blueO = Player.find(Game.last.blue_offense)
+		blueD = Player.find(Game.last.blue_defense)
+		redO_se = SeasonalELO.where(:player_id => redO.id, :season => seasonID).first
+		redD_se = SeasonalELO.where(:player_id => redD.id, :season => seasonID).first
+		blueO_se = SeasonalELO.where(:player_id => blueO.id, :season => seasonID).first
+		blueD_se = SeasonalELO.where(:player_id => blueD.id, :season => seasonID).first
+
+		swing = Game.last.elo_swing
+
+		if $last_game.winner == "Red Team" and $last_game.red_offense != $last_game.red_defense
+			redO.wins -= 1
+			redO.wins_on_offense -= 1
+			redO.overall_elo -= swing
+			redO.points_for -= Game.last.winning_score
+			redO.points_against -= Game.last.losing_score
+			redO_se.elo -= swing
+
+			redD.wins -= 1
+			redD.wins_on_defense -= 1
+			redD.overall_elo -= swing
+			redD.points_for -= Game.last.winning_score
+			redD.points_against -= Game.last.losing_score
+			redD_se.elo -= swing
+
+			blueO.losses -= 1
+			blueO.losses_on_offense -= 1
+			blueO.overall_elo += swing
+			blueO.points_for -= Game.last.losing_score
+			blueO.points_against -= Game.last.winning_score
+			blueO_se.elo += swing
+
+			blueD.losses -= 1
+			blueD.losses_on_defense -= 1
+			blueD.overall_elo += swing
+			blueD.points_for -= Game.last.losing_score
+			blueD.points_against -= Game.last.winning_score
+			blueD_se.elo += swing
+
+			redO.save
+			redD.save
+			blueO.save
+			blueD.save
+			redO_se.save
+			redD_se.save
+			blueO_se.save
+			blueD_se.save
+
+		elsif $last_game.winner == "Blue Team" and $last_game.blue_offense != $last_game.blue_defense
+			blueO.wins -= 1
+			blueO.wins_on_offense -= 1
+			blueO.overall_elo -= swing
+			blueO.points_for -= Game.last.winning_score
+			blueO.points_against -= Game.last.losing_score
+			blueO_se.elo -= swing
+
+			blueD.wins -= 1
+			blueD.wins_on_defense -= 1
+			blueD.overall_elo -= swing
+			blueD.points_for -= Game.last.winning_score
+			blueD.points_against -= Game.last.losing_score
+			blueD_se.elo -= swing
+
+			redO.losses -= 1
+			redO.losses_on_offense -= 1
+			redO.overall_elo += swing
+			redO.points_for -= Game.last.losing_score
+			redO.points_against -= Game.last.winning_score
+			redO_se.elo += swing
+
+			redD.losses -= 1
+			redD.losses_on_defense -= 1
+			redD.overall_elo += swing
+			redD.points_for -= Game.last.losing_score
+			redD.points_against -= Game.last.winning_score
+			redD_se.elo += swing
+
+			redO.save
+			redD.save
+			blueO.save
+			blueD.save
+			redO_se.save
+			redD_se.save
+			blueO_se.save
+			blueD_se.save
+
+		elsif $last_game.winner == "Red Team" and $last_game.red_offense == $last_game.red_defense
+			redO.wins -= 1
+			redO.overall_elo -= swing
+			redO.points_for -= Game.last.winning_score
+			redO.points_against -= Game.last.losing_score
+			redO_se.elo -= swing
+
+			blueO.losses -= 1
+			blueO.overall_elo += swing
+			blueO.points_for -= Game.last.losing_score
+			blueO.points_against -= Game.last.winning_score
+			blueO_se.elo += swing
+
+			redO.save
+			blueO.save
+			redO_se.save
+			blueO_se.save
+
+		else
+			blueO.wins -= 1
+			blueO.overall_elo -= swing
+			blueO.points_for -= Game.last.winning_score
+			blueO.points_against -= Game.last.losing_score
+			blueO_se.elo -= swing
+
+			redO.losses -= 1
+			redO.overall_elo += swing
+			redO.points_for -= Game.last.losing_score
+			redO.points_against -= Game.last.winning_score
+			redO_se.elo += swing
+
+			redO.save
+			blueO.save
+			redO_se.save
+			blueO_se.save
+		end
+
+		Game.last.delete
 		redirect_to root_path
 	end	
 
@@ -27,26 +153,25 @@ class GamesController < ApplicationController
 	def calc_and_update_ELO
 		@seasonID = Season.where(:active => 1).first.id
 
-		$player1 = Player.where(:name => @game.blue_offense).first
+		$player1 = Player.find(@game.blue_offense)
 		$player1ELO = SeasonalELO.where(:player_id => $player1.id, :season => @seasonID).first
 		if $player1ELO == nil
 			$player1ELO = SeasonalELO.create(:player_id => $player1.id, :season => @seasonID, :elo => 1500)
-			puts "--OH SHITE--"
 		end
 
-		$player2 = Player.where(:name => @game.blue_defense).first
+		$player2 = Player.find(@game.blue_defense)
 		$player2ELO = SeasonalELO.where(:player_id => $player2.id, :season => @seasonID).first
 		if $player2ELO == nil
 			$player2ELO = SeasonalELO.create(:player_id => $player2.id, :season => @seasonID, :elo => 1500)
 		end
 
-		$player3 = Player.where(:name => @game.red_offense).first
+		$player3 = Player.find(@game.red_offense)
 		$player3ELO = SeasonalELO.where(:player_id => $player3.id, :season => @seasonID).first
 		if $player3ELO == nil
 			$player3ELO = SeasonalELO.create(:player_id => $player3.id, :season => @seasonID, :elo => 1500)
 		end
 
-		$player4 = Player.where(:name => @game.red_defense).first
+		$player4 = Player.find(@game.red_defense)
 		$player4ELO = SeasonalELO.where(:player_id => $player4.id, :season => @seasonID).first
 		if $player4ELO == nil
 			$player4ELO = SeasonalELO.create(:player_id => $player4.id, :season => @seasonID, :elo => 1500)

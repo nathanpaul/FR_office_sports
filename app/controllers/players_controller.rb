@@ -45,14 +45,26 @@ class PlayersController < ApplicationController
 	end
 
 	def sort_by_elo
+
+		#Set player tab
 		if session[:active_var] == nil
 			session[:active_var] = 1
 		end
 		@player_list = Player.where(:active => session[:active_var]).order("overall_elo DESC")
 
+		#Set current season
 		@current_season = Season.where(:active => 1).first
 		if @current_season == nil
 			@current_season = Season.create(:name => "Summer 2014", :active => 1)
+		end
+
+		#Set 'last game' variables
+		$last_game = Game.last
+		if $last_game != nil
+			$last_game_red_o = Player.find($last_game.red_offense)
+			$last_game_red_d = Player.find($last_game.red_defense)
+			$last_game_blue_o = Player.find($last_game.blue_offense)
+			$last_game_blue_d = Player.find($last_game.blue_defense)
 		end
 
 		# $rank = 1

@@ -18,16 +18,16 @@
 				= f.number_field :losing_score
 				%br/
 				= f.label "Blue Offensive Player: "
-				= f.select(:blue_offense, Player.all.collect {|p| [ p.name ] }, {:include_blank => 'None'})
+				= f.select(:blue_offense, Player.all.collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
 				%br/
 				= f.label "Blue Defensive Player: "
-				= f.select(:blue_defense, Player.all.collect {|p| [ p.name ] }, {:include_blank => 'None'})
+				= f.select(:blue_defense, Player.all.collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
 				%br/
 				= f.label "Red Offensive Player: "
-				= f.select(:red_offense, Player.all.collect {|p| [ p.name ] }, {:include_blank => 'None'})
+				= f.select(:red_offense, Player.all.collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
 				%br/
 				= f.label "Red Defensive Player: "
-				= f.select(:red_defense, Player.all.collect {|p| [ p.name ] }, {:include_blank => 'None'})
+				= f.select(:red_defense, Player.all.collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
 				%br/
 				=f.label "Winner? "
 				= f.select :winner, ["Blue Team", "Red Team"]
@@ -126,6 +126,43 @@
 				%tr
 					%td="Most Common Partner"
 					%td
+			%h2="Win Statistics"
+			%table.misc_stats
+				%tr
+					%td="1v1"
+					-if p.wins - p.wins_on_offense - p.wins_on_defense + p.losses - p.losses_on_offense - p.losses_on_defense == 0
+						%td="-"
+					-else
+						-percentage = number_with_precision((p.wins - p.wins_on_offense - p.wins_on_defense).to_f / (p.wins - p.wins_on_offense - p.wins_on_defense + p.losses - p.losses_on_offense - p.losses_on_defense).to_f*100, :precision => 2)
+						%td="#{percentage}%"
+				%tr
+					%td="2v2"
+					-if p.wins_on_offense + p.losses_on_offense + p.wins_on_defense + p.losses_on_defense == 0
+						%td="-"
+					-else
+						-percentage = number_with_precision((p.wins_on_offense + p.wins_on_defense).to_f / (p.wins_on_offense + p.losses_on_offense + p.wins_on_defense + p.losses_on_defense).to_f*100, :precision => 2)
+						%td="#{percentage}%"
+				%tr
+					%td="2v2: Offense"
+					-if p.wins_on_offense + p.losses_on_offense == 0
+						%td="-"
+					-else
+						-percentage = number_with_precision(p.wins_on_offense.to_f / (p.wins_on_offense + p.losses_on_offense).to_f*100, :precision => 2)
+						%td="#{percentage}%"
+				%tr
+					%td="2v2: Defense"
+					-if p.wins_on_defense + p.losses_on_defense == 0
+						%td="-"
+					-else
+						-percentage = number_with_precision(p.wins_on_defense.to_f / (p.wins_on_defense + p.losses_on_defense).to_f*100, :precision => 2)
+						%td="#{percentage}%"
+				%tr
+					%td="Overall"
+					-if p.wins + p.losses == 0
+						%td="-"
+					-else
+						-percentage = number_with_precision(p.wins.to_f / (p.wins + p.losses).to_f*100, :precision => 2)
+						%td="#{percentage}%"
 			%table
 				%tr.elo.header
 					%td.season.header="Season"
@@ -207,15 +244,14 @@
 				%span.random=button_to "Random Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "random_game_button"
 				%span.season=button_to "Start New Season", "#", :remote => true, :method => "get", :class => "standard_button", :id=> "new_season_button"
 			%p.last_game
-				-$last_game = Game.last
 				-unless $last_game == nil
-					-if $last_game.winner == "Red Team" and $last_game.red_offense != $last_game.red_defense
-						%span.text="*#{$last_game.red_offense} and #{$last_game.red_defense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.blue_offense} and #{$last_game.blue_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
-					-elsif $last_game.winner == "Blue Team" and $last_game.blue_offense != $last_game.blue_defense
-						%span.text="*#{$last_game.blue_offense} and #{$last_game.blue_defense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.red_offense} and #{$last_game.red_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
-					-elsif $last_game.winner == "Red Team" and $last_game.red_offense == $last_game.red_defense
-						%span.text="*#{$last_game.red_offense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.blue_offense} in 1v1 had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+					-if $last_game.winner == "Red Team" and $last_game_red_o != $last_game_red_d
+						%span.text="*#{$last_game_red_o.name} and #{$last_game_red_d.name}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game_blue_o.name} and #{$last_game_blue_d.name} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+					-elsif $last_game.winner == "Blue Team" and $last_game_blue_o != $last_game_blue_d
+						%span.text="*#{$last_game_blue_o.name} and #{$last_game_blue_d.name}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game_red_o.name} and #{$last_game_red_d.name} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+					-elsif $last_game.winner == "Red Team" and $last_game_red_o == $last_game_red_d
+						%span.text="*#{$last_game_red_o.name}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game_blue_o.name} in 1v1 had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
 					-else
-						%span.text="*#{$last_game.blue_offense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.red_offense} in 1v1 had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+						%span.text="*#{$last_game_blue_o.name}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game_red_o.name} in 1v1 had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
 					%span.text=link_to "Delete this game", game_delete_last_game_path($last_game.id), :method => "put", :confirm => "Are you sure you want to do that?"
 			%br/
