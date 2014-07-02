@@ -43,6 +43,7 @@ $ ->
 		$("#centered_form.random_game").hide()
 		$("#centered_form.season").hide()
 		$("#centered_form.statistics").hide()
+		$("#centered_form.edit-player").hide()
 
 	$('#new_player_button').on 'click', () ->
 		$(".modal").show()
@@ -64,5 +65,10 @@ $ ->
 	$('.statistics .close').on 'click', () ->
 		$(".modal").hide()
 		$("#centered_form.statistics").hide()
+
+	$('.edit-player-link').on 'click', () ->
+		divSelector = ".edit-" + this.attributes['player_id'].value
+		$(this).parent().hide()
+		$(divSelector).show()
 
 	foo = 1

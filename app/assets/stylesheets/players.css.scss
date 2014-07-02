@@ -169,11 +169,12 @@ body{
 		#tabs {
 			height: 31px;
 
-			span {
+			a {
 				background: #ffffff;
 				border-top: 1px solid #666;
-				border-right: 1px solid #666;
-				border-left: 1px solid #666;
+				border-right: 2px solid #666;
+				border-left: none;
+				color: #000000;
 				cursor: pointer;
 				display: inline-block;
 				float: left;
@@ -181,11 +182,13 @@ body{
 				height: 30px;
 				line-height: 30px;
 				padding: 0 5px;
+				text-decoration: none;
 			}
 		}
 
-		#tabs span.selected {
+		#tabs a.selected {
 			background: #e6e6e6;
+			border-bottom: 2px solid #e6e6e6;
 		}
 
 		.players_container{
@@ -281,6 +284,7 @@ body{
 		}
 	}
 
+	.edit-player,
 	.statistics {
 		display: none;
 		z-index: 2;

@@ -102,10 +102,11 @@
 				%br/
 				.actions
 					=s.submit
-	-Player.where(:active => 1).each do |p|
+	-Player.all.each do |p|
 		#centered_form.statistics{:player_id => p.id}
 			.close="X"
 			%h1.center="#{p.name}'s Stats"
+			=link_to "Edit player", "#", :remote => true, :method => "get", :class => "edit-player-link", :player_id => "#{p.id}", :style => "margin-bottom: 25px; display: block;"
 			%table.misc_stats
 				%tr
 					%td="Biggest Win Streak"
@@ -137,12 +138,27 @@
 							%td.elo=number_with_precision($se.elo, :precision => 2)
 						-else
 							%td.elo="--NO DATA--"
+		#centered_form.edit-player{:class => "edit-#{p.id}"}
+			%h1.center="Edit Player"
+			-@player = Player.find(p.id)
+			=form_for(@player) do |pl|
+				.field
+					= pl.label "Name: "
+					= pl.text_field :name
+					%br/
+					= pl.label "Active: "
+					= pl.check_box :active
+					.actions
+						=pl.submit
 	#container_left
-		%h1.players
-			%p.player_text Player Rankings
+		%h1.center="Player Rankings"
 		#tabs
-			%span#active.selected="Active"
-			%span#inactive="Inactive"
+			-if session[:active_var] == 1
+				=link_to "Active", player_sort_active_path(0), :class => "selected", :id => "active"
+				=link_to "Inactive", player_sort_inactive_path(0), :id => "inactive"
+			-else
+				=link_to "Active", player_sort_active_path(0), :id => "active"
+				=link_to "Inactive", player_sort_inactive_path(0), :class => "selected", :id => "inactive"
 		%div.players_container
 			%table
 				%tr.player_row.header
@@ -158,7 +174,7 @@
 					%td.points_diff.header +/-
 					%td.ELO.season.header #{@current_season.name}
 					%td.ELO.header Overall
-				-Player.order("overall_elo DESC").each do |p|
+				-@player_list.each do |p|
 					-$ones_wins = p.wins - p.wins_on_offense - p.wins_on_defense
 					-$ones_losses = p.losses - p.losses_on_offense - p.losses_on_defense
 					%tr.player_row{:id => p.id}
