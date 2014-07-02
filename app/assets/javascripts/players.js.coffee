@@ -43,6 +43,7 @@ $ ->
 		$("#centered_form.random_game").hide()
 		$("#centered_form.season").hide()
 		$("#centered_form.statistics").hide()
+		$("#centered_form.edit-player").hide()
 
 	$('#new_player_button').on 'click', () ->
 		$(".modal").show()
