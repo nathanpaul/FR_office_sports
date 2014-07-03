@@ -55,7 +55,6 @@
 			= f.hidden_field :shutout_for, :value => 0
 			= f.hidden_field :shutout_against, :value => 0
 			= f.hidden_field :current_streak, :value => 0
-			= f.hidden_field :overall_elo, :value => 0
 
 			.field
 				= f.label "Name"
@@ -116,22 +115,30 @@
 			%table.misc_stats
 				%tr
 					%td="Biggest Win Streak"
-					%td
+					-if p.win_streak == 0
+						%td="0"
+					-else
+						%td.green="+#{p.win_streak}"
 				%tr
-					%td="Biggest Lose Streak"
-					%td
+					%td="Biggest Loss Streak"
+					-if p.loss_streak == 0
+						%td="0"
+					-else
+						%td.red="#{p.loss_streak}"
 				%tr
 					%td="Current Streak"
-					%td
+					-if p.current_streak < 0
+						%td.red="#{p.current_streak}"
+					-elsif p.current_streak > 0
+						%td.green="+#{p.current_streak}"
+					-else
+						%td="#{p.current_streak}"
 				%tr
 					%td="Shut Outs For"
-					%td
+					%td="#{p.shutout_for}"
 				%tr
 					%td="Shut Outs Against"
-					%td
-				%tr
-					%td="Most Common Partner"
-					%td
+					%td="#{p.shutout_against}"
 			%h2="Win Statistics"
 			%table.misc_stats
 				%tr
