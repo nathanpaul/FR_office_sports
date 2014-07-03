@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131018180734) do
+ActiveRecord::Schema.define(version: 20140701174733) do
 
   create_table "games", force: true do |t|
     t.datetime "created_at"
@@ -30,6 +30,18 @@ ActiveRecord::Schema.define(version: 20131018180734) do
     t.string   "password"
   end
 
+  create_table "partners", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "win_count"
+    t.integer  "loss_count"
+    t.integer  "win_streak"
+    t.integer  "lose_streak"
+    t.integer  "current_streak"
+    t.integer  "player_id"
+    t.integer  "partner_id"
+  end
+
   create_table "players", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -45,6 +57,22 @@ ActiveRecord::Schema.define(version: 20131018180734) do
     t.integer  "points_against"
     t.integer  "position"
     t.float    "overall_elo"
+    t.integer  "active"
+  end
+
+  create_table "seasonal_elos", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "player_id"
+    t.integer  "season"
+    t.float    "elo"
+  end
+
+  create_table "seasons", force: true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "active"
+    t.string   "name"
   end
 
   create_table "tt_games", force: true do |t|

@@ -5,6 +5,7 @@
 	%span.TT=link_to image_tag("TT.png", :size => "48x36"), "#"
 	%span.TT_text Table Tennis (Coming Soon!)
 %body
+	-$rank = 1
 	.modal
 	#centered_form.new_game
 		%h1 Create a new Game!
@@ -17,16 +18,16 @@
 				= f.number_field :losing_score
 				%br/
 				= f.label "Blue Offensive Player: "
-				= f.select(:blue_offense, Player.all.collect {|p| [ p.name ] }, {:include_blank => 'None'})
+				= f.select(:blue_offense, Player.all.collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
 				%br/
 				= f.label "Blue Defensive Player: "
-				= f.select(:blue_defense, Player.all.collect {|p| [ p.name ] }, {:include_blank => 'None'})
+				= f.select(:blue_defense, Player.all.collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
 				%br/
 				= f.label "Red Offensive Player: "
-				= f.select(:red_offense, Player.all.collect {|p| [ p.name ] }, {:include_blank => 'None'})
+				= f.select(:red_offense, Player.all.collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
 				%br/
 				= f.label "Red Defensive Player: "
-				= f.select(:red_defense, Player.all.collect {|p| [ p.name ] }, {:include_blank => 'None'})
+				= f.select(:red_defense, Player.all.collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
 				%br/
 				=f.label "Winner? "
 				= f.select :winner, ["Blue Team", "Red Team"]
@@ -44,6 +45,8 @@
 			= f.hidden_field :wins_on_defense, :value => 0
 			= f.hidden_field :losses_on_defense, :value => 0
 			= f.hidden_field :elo_rating, :value => 1500
+			= f.hidden_field :overall_elo, :value => 1500
+			= f.hidden_field :active, :value => 1
 			= f.hidden_field :points_for, :value => 0
 			= f.hidden_field :points_against, :value => 0
 			= f.hidden_field :position, :value => 1
@@ -94,6 +97,62 @@
 			Blue Team:
 			%span#blueTeam
 			%span#rankinG222
+<<<<<<< HEAD
+	#centered_form.season
+		%h1 Start a new season
+		%br/
+		=form_for(@season) do |s|
+			.field
+				= s.label "Season name: "
+				= s.text_field :name
+				%br/
+				.actions
+					=s.submit
+	-Player.all.each do |p|
+		#centered_form.statistics{:player_id => p.id}
+			.close="X"
+			%h1.center="#{p.name}'s Stats"
+			=link_to "Edit player", "#", :remote => true, :method => "get", :class => "edit-player-link", :player_id => "#{p.id}", :style => "margin-bottom: 25px; display: block;"
+			%table.misc_stats
+				%tr
+					%td="Biggest Win Streak"
+					%td
+				%tr
+					%td="Biggest Lose Streak"
+					%td
+				%tr
+					%td="Current Streak"
+					%td
+				%tr
+					%td="Shut Outs For"
+					%td
+				%tr
+					%td="Shut Outs Against"
+					%td
+				%tr
+					%td="Most Common Partner"
+					%td
+			%h2="Win Statistics"
+			%table.misc_stats
+				%tr
+					%td="1v1"
+					-if p.wins - p.wins_on_offense - p.wins_on_defense + p.losses - p.losses_on_offense - p.losses_on_defense == 0
+						%td="-"
+					-else
+						-percentage = number_with_precision((p.wins - p.wins_on_offense - p.wins_on_defense).to_f / (p.wins - p.wins_on_offense - p.wins_on_defense + p.losses - p.losses_on_offense - p.losses_on_defense).to_f*100, :precision => 2)
+						%td="#{percentage}%"
+				%tr
+					%td="2v2"
+					-if p.wins_on_offense + p.losses_on_offense + p.wins_on_defense + p.losses_on_defense == 0
+						%td="-"
+					-else
+						-percentage = number_with_precision((p.wins_on_offense + p.wins_on_defense).to_f / (p.wins_on_offense + p.losses_on_offense + p.wins_on_defense + p.losses_on_defense).to_f*100, :precision => 2)
+						%td="#{percentage}%"
+				%tr
+					%td="2v2: Offense"
+					-if p.wins_on_offense + p.losses_on_offense == 0
+						%td="-"
+=======
 	#container_left
 		%h1.players
 			%p.player_text Player Rankings
@@ -140,41 +199,113 @@
 						%span.name=image_tag('sword.png', :size => "20x20", :alt => "up and comer") + "  " + p.name
 					-elsif $shutout_against_rating > 0.015 && $total > 5
 						%span.name=image_tag('skull.png', :size => "20x20", :alt => "scrub") + "  " + p.name
+>>>>>>> upstream/master
 					-else
-						%span.name=p.name
-					%span.games_played="#{p.wins + p.losses}"
-					%span.ones_record="#{$ones_wins} - #{$ones_losses}"
-					%span.twos_record="#{p.wins - $ones_wins} - #{p.losses - $ones_losses}"
-					%span.on_offense="#{p.wins_on_offense} - #{p.losses_on_offense}"
-					%span.on_defense="#{p.wins_on_defense} - #{p.losses_on_defense}"
-					-$points_diff = p.points_for - p.points_against
-					%span.points_for="#{p.points_for}"
-					%span.points_against="#{p.points_against}"
-					-if $points_diff > 0
-						%span.points_diff.green="+#{$points_diff}"
-					-elsif $points_diff < 0
-						%span.points_diff.red="#{$points_diff}"
+						-percentage = number_with_precision(p.wins_on_offense.to_f / (p.wins_on_offense + p.losses_on_offense).to_f*100, :precision => 2)
+						%td="#{percentage}%"
+				%tr
+					%td="2v2: Defense"
+					-if p.wins_on_defense + p.losses_on_defense == 0
+						%td="-"
 					-else
-						%span.points_diff="#{$points_diff}"
-					%span.season_elo=number_with_precision(p.elo_rating, :precision => 2)
-					%span.ELO=number_with_precision(p.overall_elo, :precision => 2)
-			%li.player_row.bottom		
-				%p.add_new_stuff
-					%span.add_player=button_to "Add Player", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_player_button"
-					%span.add_new_game=button_to "Enter Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_game_button"
-					%span.random=button_to "Random Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "random_game_button"
-				%p.last_game
-					-$last_game = Game.last
-					-unless $last_game == nil
-						-if $last_game.winner == "Red Team" and $last_game.red_offense != $last_game.red_defense
-							%span.text="*#{$last_game.red_offense} and #{$last_game.red_defense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.blue_offense} and #{$last_game.blue_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
-						-elsif $last_game.winner == "Blue Team" and $last_game.blue_offense != $last_game.blue_defense
-							%span.text="*#{$last_game.blue_offense} and #{$last_game.blue_defense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.red_offense} and #{$last_game.red_defense} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
-						-elsif $last_game.winner == "Red Team" and $last_game.red_offense == $last_game.red_defense
-							%span.text="*#{$last_game.red_offense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.blue_offense} in 1v1 had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+						-percentage = number_with_precision(p.wins_on_defense.to_f / (p.wins_on_defense + p.losses_on_defense).to_f*100, :precision => 2)
+						%td="#{percentage}%"
+				%tr
+					%td="Overall"
+					-if p.wins + p.losses == 0
+						%td="-"
+					-else
+						-percentage = number_with_precision(p.wins.to_f / (p.wins + p.losses).to_f*100, :precision => 2)
+						%td="#{percentage}%"
+			%table
+				%tr.elo.header
+					%td.season.header="Season"
+					%td.elo.header="ELO"
+				-Season.all.order("id ASC").each do |s|
+					-$se = SeasonalELO.where(:player_id => p.id, :season => s.id).first
+					%tr.elo{:season_id => s.id}
+						%td.season="#{s.name}"
+						-if $se != nil
+							%td.elo=number_with_precision($se.elo, :precision => 2)
 						-else
-							%span.text="*#{$last_game.blue_offense}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game.red_offense} in 1v1 had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
-						%span.text=link_to "Delete this game", game_delete_last_game_path($last_game.id), :method => "put", :confirm => "Are you sure you want to do that?"
-				%br/
-				%p.skull=image_tag('skull.png', :size => "20x20", :alt => "shut out") + "  " + "indicates a shut out occurred this season"
-			%li.footer
+							%td.elo="--NO DATA--"
+		#centered_form.edit-player{:class => "edit-#{p.id}"}
+			%h1.center="Edit Player"
+			-@player = Player.find(p.id)
+			=form_for(@player) do |pl|
+				.field
+					= pl.label "Name: "
+					= pl.text_field :name
+					%br/
+					= pl.label "Active: "
+					= pl.check_box :active
+					.actions
+						=pl.submit
+	#container_left
+		%h1.center="Player Rankings"
+		#tabs
+			-if session[:active_var] == 1
+				=link_to "Active", player_sort_active_path(0), :class => "selected", :id => "active"
+				=link_to "Inactive", player_sort_inactive_path(0), :id => "inactive"
+			-else
+				=link_to "Active", player_sort_active_path(0), :id => "active"
+				=link_to "Inactive", player_sort_inactive_path(0), :class => "selected", :id => "inactive"
+		%div.players_container
+			%table
+				%tr.player_row.header
+					%td.rank.header Rank
+					%td.name.header Name
+					%td.games_played.header GP
+					%td.ones_record.header 1v1 Record
+					%td.twos_record.header 2v2 Record
+					%td.on_offense.header On Offense
+					%td.on_defense.header On Defense
+					%td.points_for.header PF
+					%td.points_against.header PA
+					%td.points_diff.header +/-
+					%td.ELO.season.header #{@current_season.name}
+					%td.ELO.header Overall
+				-@player_list.each do |p|
+					-$ones_wins = p.wins - p.wins_on_offense - p.wins_on_defense
+					-$ones_losses = p.losses - p.losses_on_offense - p.losses_on_defense
+					%tr.player_row{:id => p.id}
+						%td.rank=$rank
+						-$rank = $rank + 1
+						%td.name=p.name
+						%td.games_played="#{p.wins + p.losses}"
+						%td.ones_record="#{$ones_wins} - #{$ones_losses}"
+						%td.twos_record="#{p.wins - $ones_wins} - #{p.losses - $ones_losses}"
+						%td.on_offense="#{p.wins_on_offense} - #{p.losses_on_offense}"
+						%td.on_defense="#{p.wins_on_defense} - #{p.losses_on_defense}"
+						-$points_diff = p.points_for - p.points_against
+						%td.points_for="#{p.points_for}"
+						%td.points_against="#{p.points_against}"
+						-if $points_diff > 0
+							%td.points_diff.green="+#{$points_diff}"
+						-elsif $points_diff < 0
+							%td.points_diff.red="#{$points_diff}"
+						-else
+							%td.points_diff="#{$points_diff}"
+						-if SeasonalELO.where(:season => @current_season.id, :player_id => p.id).first != nil
+							%td.season_elo=number_with_precision(SeasonalELO.where(:season => @current_season.id, :player_id => p.id).first.elo, :precision => 2)
+						-else
+							%td.season_elo=1500.00
+						%td.ELO=number_with_precision(p.overall_elo, :precision => 2)
+		%div.player_row.bottom
+			%p.add_new_stuff
+				%span.add_player=button_to "Add Player", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_player_button"
+				%span.add_new_game=button_to "Enter Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "new_game_button"
+				%span.random=button_to "Random Game", "#", :remote => true, :method => "get", :class => "standard_button", :id => "random_game_button"
+				%span.season=button_to "Start New Season", "#", :remote => true, :method => "get", :class => "standard_button", :id=> "new_season_button"
+			%p.last_game
+				-unless $last_game == nil
+					-if $last_game.winner == "Red Team" and $last_game_red_o != $last_game_red_d
+						%span.text="*#{$last_game_red_o.name} and #{$last_game_red_d.name}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game_blue_o.name} and #{$last_game_blue_d.name} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+					-elsif $last_game.winner == "Blue Team" and $last_game_blue_o != $last_game_blue_d
+						%span.text="*#{$last_game_blue_o.name} and #{$last_game_blue_d.name}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game_red_o.name} and #{$last_game_red_d.name} had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+					-elsif $last_game.winner == "Red Team" and $last_game_red_o == $last_game_red_d
+						%span.text="*#{$last_game_red_o.name}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game_blue_o.name} in 1v1 had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+					-else
+						%span.text="*#{$last_game_blue_o.name}'s #{$last_game.winning_score} - #{$last_game.losing_score} victory over #{$last_game_red_o.name} in 1v1 had an ELO swing of #{number_with_precision($last_game.elo_swing, :precision => 4)}."
+					%span.text=link_to "Delete this game", game_delete_last_game_path($last_game.id), :method => "put", :confirm => "Are you sure you want to do that?"
+			%br/
