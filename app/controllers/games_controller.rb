@@ -31,7 +31,6 @@ class GamesController < ApplicationController
 		$player1ELO = SeasonalELO.where(:player_id => $player1.id, :season => @seasonID).first
 		if $player1ELO == nil
 			$player1ELO = SeasonalELO.create(:player_id => $player1.id, :season => @seasonID, :elo => 1500)
-			puts "--OH SHITE--"
 		end
 
 		$player2 = Player.where(:name => @game.blue_defense).first
@@ -78,7 +77,6 @@ class GamesController < ApplicationController
 
 		@partner1 = Partner.where(:player_id => $player1.id, :partner_id => $player2.id).first
 		if @partner1 == nil
-			puts 'hi'
 			@partner1 = Partner.create(:win_count => 0, :loss_count => 0, :win_streak => 0, :lose_streak => 0, :current_streak => 0, :player_id => $player1.id, :partner_id => $player2.id)
 		end
 		@partner2 = Partner.where(:player_id => $player2.id, :partner_id => $player1.id).first
