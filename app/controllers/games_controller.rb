@@ -218,6 +218,30 @@ class GamesController < ApplicationController
 			@partner4 = Partner.create(:win_count => 0, :loss_count => 0, :win_streak => 0, :lose_streak => 0, :current_streak => 0, :player_id => $player4.id, :partner_id => $player3.id)
 		end
 
+		if @game.losing_score == 0
+			if @game.winner == "Blue Team"
+				$player1.shutout_for += 1
+				$player2.shutout_for += 1
+				$player3.shutout_against += 1
+				$player4.shutout_against += 1
+
+				unless $player1 == $player2 && $player3 == $player4
+					$player1.shutout_for += 1
+					$player3.shutout_against += 1
+				end
+			else
+				$player4.shutout_for += 1
+				$player3.shutout_for += 1
+				$player2.shutout_against += 1
+				$player1.shutout_against += 1
+
+				unless $player1 == $player2 && $player3 == $player4
+					$player3.shutout_for += 1
+					$player1.shutout_against += 1
+				end
+			end
+		end
+
 		if @game.winner == "Red Team"
 			$player1.elo_rating -= $ELO_swing
 			$player2.elo_rating -= $ELO_swing
@@ -227,13 +251,21 @@ class GamesController < ApplicationController
 			$player4.elo_rating += $ELO_swing
 			$player3.overall_elo += $ELO_swing
 			$player4.overall_elo += $ELO_swing
-			#player3, player 4 win.
 
 			unless $player1 == $player2 && $player3 == $player4
 				$player1.losses += 1
 				$player2.losses += 1
 				$player3.wins += 1
 				$player4.wins += 1
+
+				$player1.win_streak = 0
+				$player1.loss_streak+=1
+				$player2.win_streak = 0
+				$player2.loss_streak+=1
+				$player3.win_streak+=1
+				$player3.loss_streak = 0
+				$player4.win_streak+=1
+				$player4.loss_streak = 0
 
 				$player1.losses_on_offense += 1
 				$player2.losses_on_defense += 1
@@ -314,6 +346,15 @@ class GamesController < ApplicationController
 				$player2.wins += 1
 				$player3.losses += 1
 				$player4.losses += 1
+
+				$player1.win_streak += 1
+				$player1.loss_streak = 0
+				$player2.win_streak += 1
+				$player2.loss_streak = 0
+				$player3.win_streak = 0
+				$player3.loss_streak  += 1
+				$player4.win_streak = 0
+				$player4.loss_streak += 1
 
 				$player1.wins_on_offense += 1
 				$player2.wins_on_defense += 1
