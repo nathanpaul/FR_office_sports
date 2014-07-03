@@ -29,9 +29,42 @@ class GamesController < ApplicationController
 		blueO_se = SeasonalELO.where(:player_id => blueO.id, :season => seasonID).first
 		blueD_se = SeasonalELO.where(:player_id => blueD.id, :season => seasonID).first
 
+		$partner1 = Partner.where(:player_id => redO.id, :partner_id => redD.id).first
+		$partner2 = Partner.where(:player_id => redD.id, :partner_id => redO.id).first
+		$partner3 = Partner.where(:player_id => blueO.id, :partner_id => blueD.id).first
+		$partner4 = Partner.where(:player_id => blueD.id, :partner_id => blueO.id).first
+
 		swing = Game.last.elo_swing
 
 		if $last_game.winner == "Red Team" and $last_game.red_offense != $last_game.red_defense
+			#partner1/2 are winners.
+
+			$partner1.win_count -= 1
+			$partner1.current_streak -= 1
+			if($partner1.current_streak == ($partner1.win_streak -1))
+				$partner1.win_streak -= 1
+			end
+
+			$partner2.win_count -= 1
+			$partner2.current_streak -= 1
+			if($artner2.current_streak == ($partner2.win_streak -1))
+				$partner2.win_streak -= 1
+			end
+
+			#partner3/4 are losers.
+
+			$partner3.loss_count -= 1
+			$partner3.current_streak += 1
+			if(-($partner3.current_streak) == ($partner3.lose_streak - 1))
+				$partner3.lose_streak -= 1
+			end
+
+			$partner4.loss_count -= 1
+			$partner4.current_streak += 1
+			if(-($partner4.current_streak) == ($partner4.lose_streak - 1))
+				$partner4.lose_streak -= 1
+			end
+
 			redO.wins -= 1
 			redO.wins_on_offense -= 1
 			redO.overall_elo -= swing
@@ -70,6 +103,34 @@ class GamesController < ApplicationController
 			blueD_se.save
 
 		elsif $last_game.winner == "Blue Team" and $last_game.blue_offense != $last_game.blue_defense
+			#partner3/4 are winners.
+
+			$partner3.win_count -= 1
+			$partner3.current_streak -= 1
+			if($partner3.current_streak == ($partner3.win_streak - 1))
+				$partner3.win_streak -= 1
+			end
+
+			$partner4.win_count -= 1
+			$partner4.current_streak -= 1
+			if($partner4.current_streak == ($partner4.win_streak - 1))
+				$partner4.win_streak -= 1
+			end
+
+			#partner1/2 are losers.
+
+			$partner1.loss_count -= 1
+			$partner1.current_streak += 1
+			if(-($partner1.current_streak) == ($partner1.lose_streak - 1))
+				$partner1.lose_streak -= 1
+			end
+
+			$partner2.loss_count -= 1
+			$partner2.current_streak += 1
+			if(-($partner2.current_streak) == ($partner2.lose_streak - 1))
+				$partner2.lose_streak -= 1
+			end
+
 			blueO.wins -= 1
 			blueO.wins_on_offense -= 1
 			blueO.overall_elo -= swing
@@ -143,6 +204,11 @@ class GamesController < ApplicationController
 			redO_se.save
 			blueO_se.save
 		end
+
+		$partner1.save
+		$partner2.save
+		$partner3.save
+		$partner4.save
 
 		Game.last.delete
 		redirect_to root_path
@@ -218,29 +284,29 @@ class GamesController < ApplicationController
 			@partner4 = Partner.create(:win_count => 0, :loss_count => 0, :win_streak => 0, :lose_streak => 0, :current_streak => 0, :player_id => $player4.id, :partner_id => $player3.id)
 		end
 
-		if @game.losing_score == 0
-			if @game.winner == "Blue Team"
-				$player1.shutout_for += 1
-				$player2.shutout_for += 1
-				$player3.shutout_against += 1
-				$player4.shutout_against += 1
+		# if @game.losing_score == 0
+		# 	if @game.winner == "Blue Team"
+		# 		$player1.shutout_for += 1
+		# 		$player2.shutout_for += 1
+		# 		$player3.shutout_against += 1
+		# 		$player4.shutout_against += 1
 
-				unless $player1 == $player2 && $player3 == $player4
-					$player1.shutout_for += 1
-					$player3.shutout_against += 1
-				end
-			else
-				$player4.shutout_for += 1
-				$player3.shutout_for += 1
-				$player2.shutout_against += 1
-				$player1.shutout_against += 1
+		# 		unless $player1 == $player2 && $player3 == $player4
+		# 			$player1.shutout_for += 1
+		# 			$player3.shutout_against += 1
+		# 		end
+		# 	else
+		# 		$player4.shutout_for += 1
+		# 		$player3.shutout_for += 1
+		# 		$player2.shutout_against += 1
+		# 		$player1.shutout_against += 1
 
-				unless $player1 == $player2 && $player3 == $player4
-					$player3.shutout_for += 1
-					$player1.shutout_against += 1
-				end
-			end
-		end
+		# 		unless $player1 == $player2 && $player3 == $player4
+		# 			$player3.shutout_for += 1
+		# 			$player1.shutout_against += 1
+		# 		end
+		# 	end
+		# end
 
 		if @game.winner == "Red Team"
 			$player1.elo_rating -= $ELO_swing
@@ -258,14 +324,14 @@ class GamesController < ApplicationController
 				$player3.wins += 1
 				$player4.wins += 1
 
-				$player1.win_streak = 0
-				$player1.loss_streak+=1
-				$player2.win_streak = 0
-				$player2.loss_streak+=1
-				$player3.win_streak+=1
-				$player3.loss_streak = 0
-				$player4.win_streak+=1
-				$player4.loss_streak = 0
+				# $player1.win_streak = 0
+				# $player1.loss_streak+=1
+				# $player2.win_streak = 0
+				# $player2.loss_streak+=1
+				# $player3.win_streak+=1
+				# $player3.loss_streak = 0
+				# $player4.win_streak+=1
+				# $player4.loss_streak = 0
 
 				$player1.losses_on_offense += 1
 				$player2.losses_on_defense += 1
@@ -347,14 +413,14 @@ class GamesController < ApplicationController
 				$player3.losses += 1
 				$player4.losses += 1
 
-				$player1.win_streak += 1
-				$player1.loss_streak = 0
-				$player2.win_streak += 1
-				$player2.loss_streak = 0
-				$player3.win_streak = 0
-				$player3.loss_streak  += 1
-				$player4.win_streak = 0
-				$player4.loss_streak += 1
+				# $player1.win_streak += 1
+				# $player1.loss_streak = 0
+				# $player2.win_streak += 1
+				# $player2.loss_streak = 0
+				# $player3.win_streak = 0
+				# $player3.loss_streak  += 1
+				# $player4.win_streak = 0
+				# $player4.loss_streak += 1
 
 				$player1.wins_on_offense += 1
 				$player2.wins_on_defense += 1
