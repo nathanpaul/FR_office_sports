@@ -55,6 +55,7 @@
 			= f.hidden_field :shutout_for, :value => 0
 			= f.hidden_field :shutout_against, :value => 0
 			= f.hidden_field :current_streak, :value => 0
+			= f.hidden_field :overall_elo, :value => 0
 
 			.field
 				= f.label "Name"
@@ -231,7 +232,6 @@
 								-$shutout_for_rating = p.shutout_for.to_f/$total
 							-if(p.shutout_against > 0)
 								-$shutout_against_rating = p.shutout_against.to_f/$total
-						-#logger.debug "Nil?: #{p.current_streak}"
 						-if $total == 0
 							%td.name=image_tag('baby.gif', :size => "20x20", :alt => "novice") + "  " + p.name
 						-else
@@ -240,7 +240,7 @@
 							-elsif p.shutout_for > 0
 								-imgAry.push(image_tag('sword.png', :size => "20x20", :alt => "master"))
 							-if $shutout_against_rating > 0.0005
-								-img.push(image_tag('skull.png', :size => "20x20", :alt => "scrub"))
+								-imgAry.push(image_tag('skull.png', :size => "20x20", :alt => "scrub"))
 							-if imgAry.length == 0
 								%td.name=p.name
 							-if imgAry.length == 1
