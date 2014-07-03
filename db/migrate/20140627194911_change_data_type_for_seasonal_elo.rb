@@ -1,7 +1,5 @@
 class ChangeDataTypeForSeasonalElo < ActiveRecord::Migration
   def change
-  	change_table :seasonal_elos do |t|
-  		t.change :elo, :float
-  	end
+  	add_column :seasonal_elos, :elo, :float
   end
 end
