@@ -194,6 +194,27 @@ class GamesController < ApplicationController
 
 		if @game.losing_score == 0
 			$ELO_swing = 50
+			if @game.winner == "Blue Team"
+				unless $player1 == $player2 && $player3 == $player4
+					$player1.shutout_for += 1
+					$player2.shutout_for += 1
+					$player3.shutout_against += 1
+					$player4.shutout_against += 1
+				else
+					$player1.shutout_for += 1
+					$player3.shutout_against += 1
+				end
+			else
+				unless $player1 == $player2 && $player3 == $player4
+					$player4.shutout_for += 1
+					$player3.shutout_for += 1
+					$player2.shutout_against += 1
+					$player1.shutout_against += 1
+				else
+					$player3.shutout_for += 1
+					$player1.shutout_against += 1
+				end
+			end
 		end
 
 		if $player1 == $player2 && $player3 == $player4
@@ -218,30 +239,6 @@ class GamesController < ApplicationController
 			@partner4 = Partner.create(:win_count => 0, :loss_count => 0, :win_streak => 0, :lose_streak => 0, :current_streak => 0, :player_id => $player4.id, :partner_id => $player3.id)
 		end
 
-		if @game.losing_score == 0
-			if @game.winner == "Blue Team"
-				$player1.shutout_for += 1
-				$player2.shutout_for += 1
-				$player3.shutout_against += 1
-				$player4.shutout_against += 1
-
-				unless $player1 == $player2 && $player3 == $player4
-					$player1.shutout_for += 1
-					$player3.shutout_against += 1
-				end
-			else
-				$player4.shutout_for += 1
-				$player3.shutout_for += 1
-				$player2.shutout_against += 1
-				$player1.shutout_against += 1
-
-				unless $player1 == $player2 && $player3 == $player4
-					$player3.shutout_for += 1
-					$player1.shutout_against += 1
-				end
-			end
-		end
-
 		if @game.winner == "Red Team"
 			$player1.elo_rating -= $ELO_swing
 			$player2.elo_rating -= $ELO_swing
@@ -252,20 +249,51 @@ class GamesController < ApplicationController
 			$player3.overall_elo += $ELO_swing
 			$player4.overall_elo += $ELO_swing
 
+			#Set player1 current streak and check if it's beating their loss streak
+			if $player1.current_streak >= 0
+				$player1.current_streak = -1
+			else
+				$player1.current_streak -= 1
+			end
+			if $player1.current_streak < $player1.loss_streak
+				$player1.loss_streak = $player1.current_streak
+			end
+
+			#Set player2 current streak and check if it's beating their loss streak
+			if $player2.current_streak >= 0
+				$player2.current_streak = -1
+			else
+				$player2.current_streak -= 1
+			end
+			if $player2.current_streak < $player2.loss_streak
+				$player2.loss_streak = $player2.current_streak
+			end
+
+			#Set player3 current streak and check if it's beating their win streak
+			if $player3.current_streak <= 0
+				$player3.current_streak = 1
+			else
+				$player3.current_streak += 1
+			end
+			if $player3.currentStreak > $player3.win_streak
+				$player3.win_streak = $player3.current_streak
+			end
+
+			#Set player4 current streak and check if it's beating their win streak
+			if $player4.current_streak <= 0
+				$player4.current_streak = 1
+			else
+				$player4.current_streak += 1
+			end
+			if $player4.currentStreak > $player4.win_streak
+				$player4.win_streak = $player4.current_streak
+			end
+
 			unless $player1 == $player2 && $player3 == $player4
 				$player1.losses += 1
 				$player2.losses += 1
 				$player3.wins += 1
 				$player4.wins += 1
-
-				$player1.win_streak = 0
-				$player1.loss_streak+=1
-				$player2.win_streak = 0
-				$player2.loss_streak+=1
-				$player3.win_streak+=1
-				$player3.loss_streak = 0
-				$player4.win_streak+=1
-				$player4.loss_streak = 0
 
 				$player1.losses_on_offense += 1
 				$player2.losses_on_defense += 1
@@ -313,11 +341,6 @@ class GamesController < ApplicationController
 			else
 				$player1.losses += 1
 				$player3.wins += 1
-
-				$player1.win_streak = 0
-				$player1.loss_streak+=1
-				$player3.win_streak+=1
-				$player3.loss_streak = 0
 			end
 
 			$player1.points_for += @game.losing_score
@@ -341,20 +364,51 @@ class GamesController < ApplicationController
 			$player3.overall_elo -= $ELO_swing
 			$player4.overall_elo -= $ELO_swing
 
+			#Set player3 current streak and check if it's beating their loss streak
+			if $player3.current_streak >= 0
+				$player3.current_streak = -1
+			else
+				$player1.current_streak -= 1
+			end
+			if $player3.current_streak < $player3.loss_streak
+				$player3.loss_streak = $player3.current_streak
+			end
+
+			#Set player4 current streak and check if it's beating their loss streak
+			if $player4.current_streak >= 0
+				$player4.current_streak = -1
+			else
+				$player4.current_streak -= 1
+			end
+			if $player4.current_streak < $player4.loss_streak
+				$player4.loss_streak = $player4.current_streak
+			end
+
+			#Set player1 current streak and check if it's beating their win streak
+			if $player1.current_streak <= 0
+				$player1.current_streak = 1
+			else
+				$player1.current_streak += 1
+			end
+			if $player1.current_streak > $player1.win_streak
+				$player1.win_streak = $player1.current_streak
+			end
+
+			#Set player2 current streak and check if it's beating their win streak
+			if $player2.current_streak <= 0
+				$player2.current_streak = 1
+			else
+				$player2.current_streak += 1
+			end
+			if $player2.current_streak > $player2.win_streak
+				$player2.win_streak = $player2.current_streak
+			end
+
 			unless $player1 == $player2 && $player3 == $player4
 				$player1.wins += 1
 				$player2.wins += 1
 				$player3.losses += 1
 				$player4.losses += 1
-
-				$player1.win_streak += 1
-				$player1.loss_streak = 0
-				$player2.win_streak += 1
-				$player2.loss_streak = 0
-				$player3.win_streak = 0
-				$player3.loss_streak  += 1
-				$player4.win_streak = 0
-				$player4.loss_streak += 1
 
 				$player1.wins_on_offense += 1
 				$player2.wins_on_defense += 1
@@ -404,11 +458,6 @@ class GamesController < ApplicationController
 			else
 				$player1.wins += 1
 				$player3.losses += 1
-
-				$player1.win_streak += 1
-				$player1.loss_streak = 0
-				$player3.win_streak = 0
-				$player3.loss_streak  += 1
 			end
 
 
@@ -424,7 +473,7 @@ class GamesController < ApplicationController
 			$player4.points_for += @game.losing_score
 			$player4.points_against += @game.winning_score			
 		end
-
+		
 		@game.elo_swing = $ELO_swing
 		@game.save				
 
