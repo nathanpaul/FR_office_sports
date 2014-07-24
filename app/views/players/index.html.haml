@@ -141,21 +141,14 @@
 						-percentage = number_with_precision(p.points_for.to_f / (p.points_for.to_f + p.points_against.to_f) * 100, :precision => 2)
 						%td="#{percentage}%"
 				%tr
-					%td="2v2"
-					-if p.wins_on_offense + p.losses_on_offense + p.wins_on_defense + p.losses_on_defense == 0
-						%td="-"
-					-else
-						-percentage = number_with_precision((p.wins_on_offense + p.wins_on_defense).to_f / (p.wins_on_offense + p.losses_on_offense + p.wins_on_defense + p.losses_on_defense).to_f*100, :precision => 2)
-						%td="#{percentage}%"
-				%tr
-					%td="2v2: Offense"
+					%td="On Offense"
 					-if p.wins_on_offense + p.losses_on_offense == 0
 						%td="-"
 					-else
 						-percentage = number_with_precision(p.wins_on_offense.to_f / (p.wins_on_offense + p.losses_on_offense).to_f*100, :precision => 2)
 						%td="#{percentage}%"
 				%tr
-					%td="2v2: Defense"
+					%td="On Defense"
 					-if p.wins_on_defense + p.losses_on_defense == 0
 						%td="-"
 					-else
@@ -163,10 +156,10 @@
 						%td="#{percentage}%"
 				%tr
 					%td="Overall"
-					-if p.wins + p.losses == 0
+					-if p.wins_on_offense + p.losses_on_offense + p.wins_on_defense + p.losses_on_defense == 0
 						%td="-"
 					-else
-						-percentage = number_with_precision(p.wins.to_f / (p.wins + p.losses).to_f*100, :precision => 2)
+						-percentage = number_with_precision((p.wins_on_offense + p.wins_on_defense).to_f / (p.wins_on_offense + p.losses_on_offense + p.wins_on_defense + p.losses_on_defense).to_f*100, :precision => 2)
 						%td="#{percentage}%"
 			%table
 				%tr.elo.header
@@ -207,7 +200,7 @@
 					%td.rank.header Rank
 					%td.name.header Name
 					%td.games_played.header GP
-					%td.twos_record.header 2v2 Record
+					%td.twos_record.header Record
 					%td.on_offense.header On Offense
 					%td.on_defense.header On Defense
 					%td.points_for.header PF
