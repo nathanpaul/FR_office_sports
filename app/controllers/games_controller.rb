@@ -275,7 +275,7 @@ class GamesController < ApplicationController
 			else
 				$player3.current_streak += 1
 			end
-			if $player3.currentStreak > $player3.win_streak
+			if $player3.current_streak > $player3.win_streak
 				$player3.win_streak = $player3.current_streak
 			end
 
@@ -285,7 +285,7 @@ class GamesController < ApplicationController
 			else
 				$player4.current_streak += 1
 			end
-			if $player4.currentStreak > $player4.win_streak
+			if $player4.current_streak > $player4.win_streak
 				$player4.win_streak = $player4.current_streak
 			end
 
@@ -368,7 +368,7 @@ class GamesController < ApplicationController
 			if $player3.current_streak >= 0
 				$player3.current_streak = -1
 			else
-				$player1.current_streak -= 1
+				$player3.current_streak -= 1
 			end
 			if $player3.current_streak < $player3.loss_streak
 				$player3.loss_streak = $player3.current_streak

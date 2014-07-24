@@ -18,16 +18,16 @@
 				= f.number_field :losing_score
 				%br/
 				= f.label "Blue Offensive Player: "
-				= f.select(:blue_offense, Player.all.collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
+				= f.select(:blue_offense, Player.all.where(:active => 1).order(:name).collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
 				%br/
 				= f.label "Blue Defensive Player: "
-				= f.select(:blue_defense, Player.all.collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
+				= f.select(:blue_defense, Player.all.where(:active => 1).order(:name).collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
 				%br/
 				= f.label "Red Offensive Player: "
-				= f.select(:red_offense, Player.all.collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
+				= f.select(:red_offense, Player.all.where(:active => 1).order(:name).collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
 				%br/
 				= f.label "Red Defensive Player: "
-				= f.select(:red_defense, Player.all.collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
+				= f.select(:red_defense, Player.all.where(:active => 1).order(:name).collect {|p| [ p.name, p.id ] }, {:include_blank => 'None'})
 				%br/
 				=f.label "Winner? "
 				= f.select :winner, ["Blue Team", "Red Team"]
@@ -126,27 +126,19 @@
 					-else
 						%td.red="#{p.loss_streak}"
 				%tr
-					%td="Current Streak"
-					-if p.current_streak < 0
-						%td.red="#{p.current_streak}"
-					-elsif p.current_streak > 0
-						%td.green="+#{p.current_streak}"
-					-else
-						%td="#{p.current_streak}"
-				%tr
 					%td="Shut Outs For"
 					%td="#{p.shutout_for}"
 				%tr
 					%td="Shut Outs Against"
 					%td="#{p.shutout_against}"
-			%h2="Win Statistics"
+			%h2="Statistics"
 			%table.misc_stats
 				%tr
-					%td="1v1"
-					-if p.wins - p.wins_on_offense - p.wins_on_defense + p.losses - p.losses_on_offense - p.losses_on_defense == 0
+					%td="PF %"
+					-if p.points_for + p.points_against == 0
 						%td="-"
 					-else
-						-percentage = number_with_precision((p.wins - p.wins_on_offense - p.wins_on_defense).to_f / (p.wins - p.wins_on_offense - p.wins_on_defense + p.losses - p.losses_on_offense - p.losses_on_defense).to_f*100, :precision => 2)
+						-percentage = number_with_precision(p.points_for.to_f / (p.points_for.to_f + p.points_against.to_f) * 100, :precision => 2)
 						%td="#{percentage}%"
 				%tr
 					%td="2v2"
@@ -215,12 +207,12 @@
 					%td.rank.header Rank
 					%td.name.header Name
 					%td.games_played.header GP
-					%td.ones_record.header 1v1 Record
 					%td.twos_record.header 2v2 Record
 					%td.on_offense.header On Offense
 					%td.on_defense.header On Defense
 					%td.points_for.header PF
 					%td.points_against.header PA
+					%td.current_streak.header Current Streak
 					%td.points_diff.header +/-
 					%td.ELO.season.header #{@current_season.name}
 					%td.ELO.header Overall
@@ -260,13 +252,18 @@
 									=imgAry.at(1)
 									=p.name
 						%td.games_played="#{p.wins + p.losses}"
-						%td.ones_record="#{$ones_wins} - #{$ones_losses}"
 						%td.twos_record="#{p.wins - $ones_wins} - #{p.losses - $ones_losses}"
 						%td.on_offense="#{p.wins_on_offense} - #{p.losses_on_offense}"
 						%td.on_defense="#{p.wins_on_defense} - #{p.losses_on_defense}"
 						-$points_diff = p.points_for - p.points_against
 						%td.points_for="#{p.points_for}"
 						%td.points_against="#{p.points_against}"
+						-if p.current_streak > 0
+							%td.points_diff.green="+#{p.current_streak}"
+						-elsif p.current_streak < 0
+							%td.points_diff.red="#{p.current_streak}"
+						-else
+							%td.points_diff="#{p.current_streak}"
 						-if $points_diff > 0
 							%td.points_diff.green="+#{$points_diff}"
 						-elsif $points_diff < 0
